@@ -7,7 +7,6 @@ Player = {
     "yPos": 5,
     "mushrooms": 0,
     "char": "L",
-    "dead": False
 }
 
 
