@@ -22,19 +22,45 @@ def Restart(InitialBoard, Board, InitialPlayer, Player):
     Player.update(copy.deepcopy(InitialPlayer))
 
 def PlayerInput(Board, Player, waitTime, InitialPlayer, InitialBoard):
+    constBoard = InitialBoard[Player["yPos"]][Player["xPos"]]
     print("\nPress W, A, S, D or I, J, K, L to move")
     print("Press ! to Restart and Q to quit")
     print("\nCurrent Mushrooms: ", Player["mushrooms"])
+    avoid = ["R", "T", "+", "x", "*"]
     moveset = input("Enter move:")
     for move in moveset: 
         if move.lower() == "w" or move.lower() == "i":
             if Board[Player["yPos"] - 1][Player["xPos"]] == ".":
-                if InitialBoard[Player["yPos"]][Player["xPos"]] == "+":
+                if constBoard == "+":
                     Board[Player["yPos"]][Player["xPos"]] = "."
                     Player["yPos"] -= 1
-                else:
-                    Board[Player["yPos"]][Player["xPos"]] = InitialBoard[Player["yPos"]][Player["xPos"]]
+                elif constBoard == "~":
+                    Board[Player["yPos"]][Player["xPos"]] = "-"
                     Player["yPos"] -= 1
+                else: 
+                    Board[Player["yPos"]][Player["xPos"]] = "."
+                    Player["yPos"] -= 1
+            elif Board[Player["yPos"] - 1][Player["xPos"]] == "-":
+                if constBoard == "~":
+                    Board[Player["yPos"]][Player["xPos"]] = "-"
+                    Player["yPos"] -= 1
+                else:
+                    Board[Player["yPos"]][Player["xPos"]] = "."
+                    Player["yPos"] -= 1
+            elif Board[Player["yPos"] - 1][Player["xPos"]] == "R":
+                if Board[Player["yPos"] - 2][Player["xPos"]] not in avoid:
+                    if Board[Player["yPos"] - 2][Player["xPos"]] != "~":
+                        Board[Player["yPos"] - 2][Player["xPos"]] = "R"
+                        if constBoard == "~":
+                            Board[Player["yPos"]][Player["xPos"]] = "-"
+                            Player["yPos"] -= 1
+                        else:
+                            Board[Player["yPos"]][Player["xPos"]] = "."
+                            Player["yPos"] -= 1
+                    else: 
+                        Board[Player["yPos"] - 2][Player["xPos"]] = "-"
+                        Board[Player["yPos"]][Player["xPos"]] = "."
+                        Player["yPos"] -= 1
             elif Board[Player["yPos"] - 1][Player["xPos"]] == "+":
                 Player["mushrooms"] += 1
                 Board[Player["yPos"]][Player["xPos"]] = InitialBoard[Player["yPos"]][Player["xPos"]]
@@ -52,12 +78,36 @@ def PlayerInput(Board, Player, waitTime, InitialPlayer, InitialBoard):
             
         if move.lower() == "a" or move.lower() == "j":
             if Board[Player["yPos"]][Player["xPos"] - 1] == ".":
-                if InitialBoard[Player["yPos"]][Player["xPos"]] == "+":
+                if constBoard == "+":
                     Board[Player["yPos"]][Player["xPos"]] = "."
                     Player["xPos"] -= 1
-                else:
-                    Board[Player["yPos"]][Player["xPos"]] = InitialBoard[Player["yPos"]][Player["xPos"]]
+                elif constBoard == "~":
+                    Board[Player["yPos"]][Player["xPos"]] = "-"
                     Player["xPos"] -= 1
+                else: 
+                    Board[Player["yPos"]][Player["xPos"]] = "."
+                    Player["xPos"] -= 1
+            elif Board[Player["yPos"]][Player["xPos"] - 1] == "-":
+                if constBoard == "~":
+                    Board[Player["yPos"]][Player["xPos"]] = "-"
+                    Player["xPos"] -= 1
+                else:
+                    Board[Player["yPos"]][Player["xPos"]] = "."
+                    Player["xPos"] -= 1
+            elif Board[Player["yPos"]][Player["xPos"]-1] == "R":
+                if Board[Player["yPos"]][Player["xPos"]-2] not in avoid:
+                    if Board[Player["yPos"]][Player["xPos"] - 2] != "~":
+                        Board[Player["yPos"]][Player["xPos"] - 2] = "R"
+                        if constBoard == "~":
+                            Board[Player["yPos"]][Player["xPos"]] = "-"
+                            Player["xPos"] -= 1
+                        else:
+                            Board[Player["yPos"]][Player["xPos"]] = "."
+                            Player["xPos"] -= 1
+                    else: 
+                        Board[Player["yPos"]][Player["xPos"] - 2] = "-"
+                        Board[Player["yPos"]][Player["xPos"]] = "." 
+                        Player["xPos"] -= 1
             elif Board[Player["yPos"]][Player["xPos"] - 1] == "+":
                 Player["mushrooms"] += 1
                 Board[Player["yPos"]][Player["xPos"]] = "."
@@ -75,12 +125,36 @@ def PlayerInput(Board, Player, waitTime, InitialPlayer, InitialBoard):
 
         if move.lower() == "s" or move.lower() == "k":
             if Board[Player["yPos"] + 1][Player["xPos"]] == ".":
-                if InitialBoard[Player["yPos"]][Player["xPos"]] == "+":
+                if constBoard == "+":
                     Board[Player["yPos"]][Player["xPos"]] = "."
                     Player["yPos"] += 1
-                else:
-                    Board[Player["yPos"]][Player["xPos"]] = InitialBoard[Player["yPos"]][Player["xPos"]]
+                elif constBoard == "~":
+                    Board[Player["yPos"]][Player["xPos"]] = "-"
                     Player["yPos"] += 1
+                else: 
+                    Board[Player["yPos"]][Player["xPos"]] = "."
+                    Player["yPos"] += 1
+            elif Board[Player["yPos"] + 1][Player["xPos"]] == "-":
+                if constBoard == "~":
+                    Board[Player["yPos"]][Player["xPos"]] = "-"
+                    Player["yPos"] += 1
+                else:
+                    Board[Player["yPos"]][Player["xPos"]] = "."
+                    Player["yPos"] += 1
+            elif Board[Player["yPos"] + 1][Player["xPos"]] == "R":
+                if Board[Player["yPos"] + 2][Player["xPos"]] not in avoid:
+                    if Board[Player["yPos"] + 2][Player["xPos"]] != "~":
+                        Board[Player["yPos"] + 2][Player["xPos"]] = "R"
+                        if constBoard == "~":
+                            Board[Player["yPos"]][Player["xPos"]] = "-"
+                            Player["yPos"] += 1
+                        else:
+                            Board[Player["yPos"]][Player["xPos"]] = "."
+                            Player["yPos"] += 1
+                    else:
+                        Board[Player["yPos"] + 2][Player["xPos"]] = "-"
+                        Board[Player["yPos"]][Player["xPos"]] = "."
+                        Player["yPos"] += 1
             elif Board[Player["yPos"] + 1][Player["xPos"]] == "+":
                 Player["mushrooms"] += 1
                 Board[Player["yPos"]][Player["xPos"]] = "."
@@ -98,14 +172,36 @@ def PlayerInput(Board, Player, waitTime, InitialPlayer, InitialBoard):
                 
         if move.lower() == "d" or move.lower() == "l":
             if Board[Player["yPos"]][Player["xPos"] + 1] == ".":
-                if InitialBoard[Player["yPos"]][Player["xPos"]] == "+":
+                if constBoard == "+":
                     Board[Player["yPos"]][Player["xPos"]] = "."
                     Player["xPos"] += 1
-                else:
-                    Board[Player["yPos"]][Player["xPos"]] = InitialBoard[Player["yPos"]][Player["xPos"]]
+                elif constBoard == "~":
+                    Board[Player["yPos"]][Player["xPos"]] = "-"
                     Player["xPos"] += 1
-                Board[Player["yPos"]][Player["xPos"]] = "."
-                Player["xPos"] += 1
+                else: 
+                    Board[Player["yPos"]][Player["xPos"]] = "."
+                    Player["xPos"] += 1
+            elif Board[Player["yPos"]][Player["xPos"] + 1] == "-":
+                if constBoard == "~":
+                    Board[Player["yPos"]][Player["xPos"]] = "-"
+                    Player["xPos"] += 1
+                else:
+                    Board[Player["yPos"]][Player["xPos"]] = "."
+                    Player["xPos"] += 1
+            elif Board[Player["yPos"]][Player["xPos"] + 1] == "R":
+                if Board[Player["yPos"]][Player["xPos"] + 2] not in avoid:
+                    if Board[Player["yPos"]][Player["xPos"] + 2] != "~":
+                        Board[Player["yPos"]][Player["xPos"] + 2] = "R"
+                        if constBoard == "~":
+                            Board[Player["yPos"]][Player["xPos"]] = "-"
+                            Player["xPos"] += 1
+                        else:
+                            Board[Player["yPos"]][Player["xPos"]] = "."
+                            Player["xPos"] += 1
+                    else: 
+                        Board[Player["yPos"]][Player["xPos"] + 2] = "-"
+                        Board[Player["yPos"]][Player["xPos"]] = "."
+                        Player["xPos"] += 1
             elif Board[Player["yPos"]][Player["xPos"] + 1] == "+":
                 Player["mushrooms"] += 1
                 Board[Player["yPos"]][Player["xPos"]] = "."
