@@ -63,10 +63,10 @@ def PlayerInput(Board, Player, waitTime, InitialPlayer, InitialBoard):
                         Player["yPos"] -= 1
             elif Board[Player["yPos"] - 1][Player["xPos"]] == "+":
                 Player["mushrooms"] += 1
-                Board[Player["yPos"]][Player["xPos"]] = "."
+                Board[Player["yPos"]][Player["xPos"]] = InitialBoard[Player["yPos"]][Player["xPos"]]
                 Player["yPos"] -= 1
             elif Board[Player["yPos"] - 1][Player["xPos"]] == "~":
-                Board[Player["yPos"]][Player["xPos"]] = "."
+                Board[Player["yPos"]][Player["xPos"]] = InitialBoard[Player["yPos"]][Player["xPos"]]
                 Player["yPos"] -= 1
                 Position(Board, Player)
                 clearConsole()
@@ -169,7 +169,7 @@ def PlayerInput(Board, Player, waitTime, InitialPlayer, InitialBoard):
                 quit()
             else:
                 DenyMove(waitTime)
-
+                
         if move.lower() == "d" or move.lower() == "l":
             if Board[Player["yPos"]][Player["xPos"] + 1] == ".":
                 if constBoard == "+":
