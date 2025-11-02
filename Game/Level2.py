@@ -1,43 +1,52 @@
 import Scripts
 
-waitTime = 1
+WaitTime = 1
 
 Player = {
-    "xPos": 5,
-    "yPos": 6,
-    "mushrooms": 0,
+    "xPos": 2,
+    "yPos": 2,
+    "mushroom": 0,
     "char": "L",
+    "axe": False,
+    "flamethrower": False,
+}
+
+InitialPlayer = { 
+    "xPos": 2,
+    "yPos": 2,
+    "mushroom": 0,
+    "char": "L",
+    "axe": False,
+    "flamethrower": False,
 }
 
 
-Board = [
+DisplayBoard = [
     ["T", "T", "T", "T", "T", "T", "T", "T", "T", "T"],
     ["T", ".", ".", ".", ".", ".", ".", ".", ".", "T"],
-    ["T", ".", "+", ".", ".", "R", "~", ".", ".", "T"],
-    ["T", ".", "R", "R", ".", "R", "~", "~", "+", "T"],
-    ["T", ".", "~", "~", ".", "R", "~", ".", ".", "T"],
-    ["T", ".", ".", ".", ".", ".", ".", ".", ".", "T"],
+    ["T", ".", ".", "+", "+", "~", "~", "~", "+", "T"],
     ["T", ".", ".", ".", ".", ".", ".", ".", ".", "T"],
     ["T", "T", "T", "T", "T", "T", "T", "T", "T", "T"]
 ]
 
-InitialPlayer = { 
-    "xPos": 5,
-    "yPos": 6,
-    "mushrooms": 0,
-    "char": "L",
-}
-
-InitialBoard = [  
+InitialBoard = [
     ["T", "T", "T", "T", "T", "T", "T", "T", "T", "T"],
     ["T", ".", ".", ".", ".", ".", ".", ".", ".", "T"],
+    ["T", ".", ".", "+", "+", "~", "~", "~", "+", "T"],
     ["T", ".", ".", ".", ".", ".", ".", ".", ".", "T"],
+    ["T", "T", "T", "T", "T", "T", "T", "T", "T", "T"]
+]
+
+ToggleBoard = [
+    ["T", "T", "T", "T", "T", "T", "T", "T", "T", "T"],
+    ["T", ".", ".", ".", ".", ".", ".", ".", ".", "T"],
+    ["T", ".", ".", "+", "+", "~", "~", "~", "+", "T"],
     ["T", ".", ".", ".", ".", ".", ".", ".", ".", "T"],
     ["T", "T", "T", "T", "T", "T", "T", "T", "T", "T"]
 ]
 
 while True:
     Scripts.clearConsole()
-    Scripts.Position(Board, Player)
-    Scripts.printBoard(Board)
-    Scripts.PlayerInput(Board, Player, waitTime, InitialPlayer, InitialBoard)
+    Scripts.Position(DisplayBoard, Player)
+    Scripts.printBoard(DisplayBoard)
+    Scripts.PlayerInput(Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard, WaitTime)
