@@ -1,16 +1,26 @@
 import Scripts
 
-waitTime = 1
+WaitTime = 1
 
 Player = {
     "xPos": 3,
     "yPos": 5,
-    "mushrooms": 0,
+    "mushroom": 0,
     "char": "L",
+    "axe": False,
+    "flamethrower": False,
 }
 
+InitialPlayer = {
+    "xPos": 3,
+    "yPos": 5,
+    "mushroom": 0,
+    "char": "L",
+    "axe": False,
+    "flamethrower": False,
+}
 
-Board = [
+DisplayBoard = [
     ["T", "T", "T", "T", "T", "T", "T", "T", "T", "T", "T", "T", "T", "T", "T"],
     ["T", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "T"],
     ["T", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "T"],
@@ -27,13 +37,6 @@ Board = [
     ["T", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "T"],
     ["T", "T", "T", "T", "T", "T", "T", "T", "T", "T", "T", "T", "T", "T", "T"]
 ]
-
-InitialPlayer = {
-    "xPos": 3,
-    "yPos": 5,
-    "mushrooms": 0,
-    "char": "L",
-}
 
 InitialBoard = [
     ["T", "T", "T", "T", "T", "T", "T", "T", "T", "T", "T", "T", "T", "T", "T"],
@@ -53,8 +56,26 @@ InitialBoard = [
     ["T", "T", "T", "T", "T", "T", "T", "T", "T", "T", "T", "T", "T", "T", "T"]
 ]
 
+ToggleBoard = [
+    ["T", "T", "T", "T", "T", "T", "T", "T", "T", "T", "T", "T", "T", "T", "T"],
+    ["T", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "T"],
+    ["T", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "T"],
+    ["T", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "T"],
+    ["T", ".", ".", ".", "+", "+", ".", ".", ".", ".", ".", ".", ".", ".", "T"],
+    ["T", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "T"],
+    ["T", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "T"],
+    ["T", ".", ".", ".", ".", "+", ".", ".", ".", ".", ".", ".", ".", ".", "T"],
+    ["T", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "T"],
+    ["T", ".", ".", ".", ".", "+", ".", ".", ".", ".", ".", ".", ".", ".", "T"],
+    ["T", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "T"],
+    ["T", ".", ".", ".", ".", "+", ".", ".", ".", ".", ".", ".", ".", ".", "T"],
+    ["T", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "T"],
+    ["T", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "T"],
+    ["T", "T", "T", "T", "T", "T", "T", "T", "T", "T", "T", "T", "T", "T", "T"]
+]
+
 while True:
     Scripts.clearConsole()
-    Scripts.Position(Board, Player)
-    Scripts.printBoard(Board)
-    Scripts.PlayerInput(Board, Player, waitTime, InitialPlayer, InitialBoard)
+    Scripts.Position(DisplayBoard, Player)
+    Scripts.printBoard(DisplayBoard)
+    Scripts.PlayerInput(Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard, WaitTime)
