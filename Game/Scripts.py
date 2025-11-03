@@ -162,6 +162,12 @@ def Space(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard,
             Player["yPos"] += yMoveVal
             Player["xPos"] += xMoveVal
 
+    if (Player["yPos"] < 0):
+        Player["yPos"] += 1
+    if (Player["xPos"] < 0):
+        Player["xPos"] += 1
+    
+
 def movement(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard, WaitTime):
     
 #------------------------spaces-------------------------------------------#
@@ -175,7 +181,7 @@ def movement(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoa
         Space(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard, WaitTime)
         if Player["mushroom"] == Player["win"]:
             Win(Player, InitialPlayer, DisplayBoard, ToggleBoard, InitialBoard)
-            
+
 #------------------------water-------------------------------------------#
     elif DisplayBoard[Player["yPos"] + yMoveVal][Player["xPos"] + xMoveVal] == "~":
         Space(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard, WaitTime)
