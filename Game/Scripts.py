@@ -23,7 +23,30 @@ def Restart(Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard):
     ToggleBoard[:] = copy.deepcopy(InitialBoard)
 
 def Loss(Player, InitialPlayer, DisplayBoard, ToggleBoard, InitialBoard):
+    clearConsole()
+    Position(DisplayBoard, Player)
+    printBoard(DisplayBoard)
     print("\nYou drowned! Game Over.")
+    print("Press ! to Restart or Q to quit")
+    print("\nCurrent Mushrooms: ", Player["mushroom"])
+    move = input("Enter move:").lower()
+
+    if move == "!":
+        Restart(Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard)
+    elif move == "q":
+        print("Goodbye")
+        quit()
+    else:
+        clearConsole()
+        printBoard(DisplayBoard)
+        print("\nPlease Input a valid character")
+        Loss(Player, InitialPlayer, DisplayBoard, ToggleBoard, InitialBoard)
+        
+def Win(Player, InitialPlayer, DisplayBoard, ToggleBoard, InitialBoard):
+    clearConsole()
+    Position(DisplayBoard, Player)
+    printBoard(DisplayBoard)
+    print("\nYou collected all mushrooms! You win.")
     print("Press ! to Restart or Q to quit")
     print("\nCurrent Mushrooms: ", Player["mushroom"])
     move = input("Enter move:").lower()
@@ -43,28 +66,42 @@ def PlayerInput(Player, InitialPlayer, DisplayBoard, ToggleBoard, InitialBoard, 
     print("\nPress W, A, S, D or I, J, K, L to move")
     print("Press ! to Restart or Q to quit")
     print("\nCurrent Mushrooms: ", Player["mushroom"])
+
     if Player["axe"] == True:
-        print("\nCurrent item: Axe")
+        print("\nCurrent item held: Axe")
     elif Player["flamethrower"] == True:
         print("\nCurrent item: Flamethrower")
     else:
-        print("\nCurrent item: None")
+        print("\nCurrent item held: None")
+
+    if not (Player["axe"] == False and Player["flamethrower"] == False):
+        print("\nInventory Full")
+    elif (InitialBoard[Player["yPos"]][Player["xPos"]] == "x") and (ToggleBoard[Player["yPos"]][Player["xPos"]] != "/"):
+        print("\nEquippable Item on tile: Axe")
+    elif (InitialBoard[Player["yPos"]][Player["xPos"]] == "*") and (ToggleBoard[Player["yPos"]][Player["xPos"]] != "/"):
+        print("\nEquippable Item on tile: Flamethrower")
+    else:
+        print("\nEquippable Item on tile: None")
+
     moveset = input("Enter move:").lower()
     
     for move in moveset:
         if move not in ("w", "a", "s", "d", "!", "q", "p"):
             break
-        if move == "w" or move == "i":
-            movement(-1, 0, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard, WaitTime)
+        try:
+            if move == "w" or move == "i":
+                movement(-1, 0, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard, WaitTime)
 
-        if move == "a" or move == "j":
-            movement(0, -1, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard, WaitTime)
+            if move == "a" or move == "j":
+                movement(0, -1, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard, WaitTime)
 
-        if move == "s" or move == "k":
-            movement(1, 0, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard, WaitTime)
+            if move == "s" or move == "k":
+                movement(1, 0, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard, WaitTime)
 
-        if move == "d" or move == "l":
-            movement(0, 1, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard, WaitTime)
+            if move == "d" or move == "l":
+                movement(0, 1, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard, WaitTime)
+        except IndexError:
+            break
 
         if move == "p":
             if Player["axe"] == False and Player["flamethrower"] == False:
@@ -81,14 +118,6 @@ def PlayerInput(Player, InitialPlayer, DisplayBoard, ToggleBoard, InitialBoard, 
 
         if move == "!":
             Restart(Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard)
-
-def Water(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard):
-    Player["yPos"] += yMoveVal
-    Player["xPos"] += xMoveVal
-    clearConsole()
-    Position(DisplayBoard, Player)
-    printBoard(DisplayBoard)
-    Loss(Player, InitialPlayer, DisplayBoard, ToggleBoard, InitialBoard)
 
 def BurnTree(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard, WaitTime):
     Space(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard, WaitTime)
@@ -136,72 +165,25 @@ def Space(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard,
 def movement(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard, WaitTime):
     
 #------------------------spaces-------------------------------------------#
-    if DisplayBoard[Player["yPos"] + yMoveVal][Player["xPos"] + xMoveVal] == ".":
+    SkipTiles = (".", "-", "x", "*")
+    if DisplayBoard[Player["yPos"] + yMoveVal][Player["xPos"] + xMoveVal] in SkipTiles:
         Space(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard, WaitTime)
 
 #------------------------mushrooms-------------------------------------------#
     elif DisplayBoard[Player["yPos"] + yMoveVal][Player["xPos"] + xMoveVal] == "+":
-        Spacetiles = (".", "+", "T", "R")
-        if InitialBoard[Player["yPos"]][Player["xPos"]] in Spacetiles:
-            DisplayBoard[Player["yPos"]][Player["xPos"]] = "."
-            Player["mushroom"] += 1
-            Player["yPos"] += yMoveVal
-            Player["xPos"] += xMoveVal
-        elif InitialBoard[Player["yPos"]][Player["xPos"]] == "~":
-            DisplayBoard[Player["yPos"]][Player["xPos"]] = "-"
-            Player["mushroom"] += 1
-            Player["yPos"] += yMoveVal
-            Player["xPos"] += xMoveVal
-        elif InitialBoard[Player["yPos"]][Player["xPos"]] == "x":
-            if ToggleBoard[Player["yPos"]][Player["xPos"]] == "/":
-                DisplayBoard[Player["yPos"]][Player["xPos"]] = "."
-                Player["mushroom"] += 1
-                Player["yPos"] += yMoveVal
-                Player["xPos"] += xMoveVal
-            else:
-                DisplayBoard[Player["yPos"]][Player["xPos"]] = "x"
-                Player["mushroom"] += 1
-                Player["yPos"] += yMoveVal
-                Player["xPos"] += xMoveVal
-        elif InitialBoard[Player["yPos"]][Player["xPos"]] == "*":
-            if ToggleBoard[Player["yPos"]][Player["xPos"]] == "/":
-                DisplayBoard[Player["yPos"]][Player["xPos"]] = "."
-                Player["mushroom"] += 1
-                Player["yPos"] += yMoveVal
-                Player["xPos"] += xMoveVal
-            else:
-                DisplayBoard[Player["yPos"]][Player["xPos"]] = "*"
-                Player["mushroom"] += 1
-                Player["yPos"] += yMoveVal
-                Player["xPos"] += xMoveVal
-
+        Player["mushroom"] += 1
+        Space(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard, WaitTime)
+        if Player["mushroom"] == Player["win"]:
+            Win(Player, InitialPlayer, DisplayBoard, ToggleBoard, InitialBoard)
+            
 #------------------------water-------------------------------------------#
     elif DisplayBoard[Player["yPos"] + yMoveVal][Player["xPos"] + xMoveVal] == "~":
-        Spacetiles = (".", "+", "T", "R")
-        if InitialBoard[Player["yPos"]][Player["xPos"]] in Spacetiles:
-            DisplayBoard[Player["yPos"]][Player["xPos"]] = "."
-            Water(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard)
-        elif InitialBoard[Player["yPos"]][Player["xPos"]] == "~":
-            DisplayBoard[Player["yPos"]][Player["xPos"]] = "-"
-            Water(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard)
-        elif InitialBoard[Player["yPos"]][Player["xPos"]] == "x":
-            if ToggleBoard[Player["yPos"]][Player["xPos"]] == "/":
-                DisplayBoard[Player["yPos"]][Player["xPos"]] = "."
-                Water(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard)
-            else:
-                DisplayBoard[Player["yPos"]][Player["xPos"]] = "x"
-                Water(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard)
-        elif InitialBoard[Player["yPos"]][Player["xPos"]] == "*":
-            if ToggleBoard[Player["yPos"]][Player["xPos"]] == "/":
-                DisplayBoard[Player["yPos"]][Player["xPos"]] = "."
-                Water(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard)
-            else:
-                DisplayBoard[Player["yPos"]][Player["xPos"]] = "*"
-                Water(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard)
+        Space(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard, WaitTime)
+        Loss(Player, InitialPlayer, DisplayBoard, ToggleBoard, InitialBoard)
 
 #------------------------rock-------------------------------------------#
     elif DisplayBoard[Player["yPos"] + yMoveVal][Player["xPos"] + xMoveVal] == "R":
-        Avoid = ("+", "R", "A", "F", "T")
+        Avoid = ("+", "R", "x", "*", "T")
         if DisplayBoard[Player["yPos"] + (yMoveVal*2)][Player["xPos"] + (xMoveVal*2)] not in Avoid:
             if DisplayBoard[Player["yPos"] + (yMoveVal*2)][Player["xPos"] + (xMoveVal*2)] == "~":
                 DisplayBoard[Player["yPos"] + (yMoveVal*2)][Player["xPos"] + (xMoveVal*2)] = "-"
@@ -209,18 +191,6 @@ def movement(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoa
             else:
                 DisplayBoard[Player["yPos"] + (yMoveVal*2)][Player["xPos"] + (xMoveVal*2)] = "R"
                 Space(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard, WaitTime)
-
-#------------------------Pavement-------------------------------------------#
-    elif DisplayBoard[Player["yPos"] + yMoveVal][Player["xPos"] + xMoveVal] == "-":
-        Space(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard, WaitTime)
-
-#------------------------Axe-------------------------------------------#
-    elif DisplayBoard[Player["yPos"] + yMoveVal][Player["xPos"] + xMoveVal] == "x":
-        Space(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard, WaitTime)
-
-#------------------------Flamethrower-------------------------------------------#
-    elif DisplayBoard[Player["yPos"] + yMoveVal][Player["xPos"] + xMoveVal] == "*":
-        Space(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard, WaitTime)
 
 #------------------------Tree-------------------------------------------#
     elif DisplayBoard[Player["yPos"] + yMoveVal][Player["xPos"] + xMoveVal] == "T":
