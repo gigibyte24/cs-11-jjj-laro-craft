@@ -1,0 +1,228 @@
+/* Main Screen Styles */
+Screen {
+    background: #1a1a2e;
+    align: center middle;
+}
+
+Center {
+    width: 100%;
+    height: 100%;
+    align: center middle;
+}
+
+/* Menu Container */
+#menu_container {
+    width: 60;
+    height: auto;
+    background: #16213e;
+    border: heavy #0f3460;
+    padding: 2;
+}
+
+/* Menu Title */
+#menu_title {
+    width: 100%;
+    height: 3;
+    content-align: center middle;
+    text-style: bold;
+    color: #00ff88;
+    margin-bottom: 1;
+}
+
+/* Level Select Title */
+#level_select_title {
+    width: 100%;
+    height: 3;
+    content-align: center middle;
+    text-style: bold;
+    color: #00ff88;
+    margin-bottom: 2;
+    margin-top: 1;
+}
+
+/* Leaderboard Title */
+#leaderboard_title {
+    width: 100%;
+    height: 3;
+    content-align: center middle;
+    text-style: bold;
+    color: #00ff88;
+    margin-bottom: 1;
+}
+
+/* Menu Buttons Container */
+#menu_buttons {
+    width: 100%;
+    height: auto;
+    align: center middle;
+}
+
+/* Default Button Styles */
+Button {
+    width: 40;
+    margin: 1;
+}
+
+/* Game Container */
+#game_container {
+    width: 100%;
+    height: 100%;
+    align: center middle;
+    padding: 1;
+}
+
+/* Level Title */
+#level_title {
+    width: 100%;
+    height: 3;
+    content-align: center middle;
+    text-style: bold;
+    color: #00ff88;
+}
+
+/* Game Board */
+#game_board {
+    width: 100%;
+    height: auto;
+    content-align: center middle;
+    margin: 1;
+}
+
+/* Game Info */
+#game_info {
+    width: 100%;
+    height: auto;
+    content-align: center middle;
+    color: #88ddff;
+    margin-top: 1;
+}
+
+/* Modal Container */
+#modal_container {
+    width: 60;
+    height: auto;
+    background: #16213e;
+    border: heavy #00ff88;
+    padding: 2;
+}
+
+/* Modal Title */
+#modal_title {
+    width: 100%;
+    height: 3;
+    content-align: center middle;
+    text-style: bold;
+    color: #00ff88;
+}
+
+/* Modal Message */
+#modal_message {
+    width: 100%;
+    height: auto;
+    content-align: center middle;
+    margin: 1;
+}
+
+/* Username Label */
+#username_label {
+    width: 100%;
+    content-align: center middle;
+    margin-top: 1;
+    color: #88ddff;
+}
+
+/* Username Input */
+#username_input {
+    width: 80%;
+    margin: 1;
+}
+
+/* Modal Buttons */
+#modal_buttons {
+    width: 100%;
+    height: auto;
+    align: center middle;
+    margin-top: 1;
+}
+
+#modal_buttons Button {
+    width: auto;
+    min-width: 15;
+}
+
+/* Level Select Container */
+#level_select_container {
+    width: 100%;
+    height: 100%;
+    padding: 2;
+    align: center top;
+}
+
+/* Level Grid */
+#level_grid {
+    grid-size: 5 3;
+    grid-gutter: 1 2;
+    width: 90%;
+    height: auto;
+    margin-top: 2;
+    margin-bottom: 2;
+}
+
+/* Level Card */
+.level_card {
+    width: 100%;
+    height: auto;
+    align: center middle;
+}
+
+/* Level Button */
+.level_button {
+    width: 100%;
+    height: 5;
+    margin-top: 1;
+    margin-bottom: 1;
+}
+
+/* Leaderboard Button */
+.leaderboard_btn {
+    width: 100%;
+    height: 3;
+    margin-top: 1;
+}
+
+/* Back Button */
+.back_button {
+    width: 30;
+    margin-top: 2;
+}
+
+/* Leaderboard Container */
+#leaderboard_container {
+    width: 80;
+    height: auto;
+    background: #16213e;
+    border: heavy #0f3460;
+    padding: 2;
+}
+
+#leaderboard_container Button {
+    width: 20;
+    margin-top: 2;
+}
+
+/* Leaderboard Table */
+#leaderboard_table {
+    width: 100%;
+    height: auto;
+    margin-top: 2;
+    margin-bottom: 2;
+}
+
+/* Header and Footer */
+Header {
+    background: #0f3460;
+}
+
+Footer {
+    background: #0f3460;
+}

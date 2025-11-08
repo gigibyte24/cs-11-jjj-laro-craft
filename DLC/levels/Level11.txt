@@ -1,0 +1,14 @@
+r = 12; c = 15
+
+TTTTTTTTTTTTTTT
+T.............T
+T..TTT...TTT..T
+T..T+T...T+T..T
+T..TTT...TTT..T
+T.............T
+T......L......T
+T.............T
+T..RRR...RRR..T
+T..R*R...RxR..T
+T..RRR...RRR..T
+TTTTTTTTTTTTTTT

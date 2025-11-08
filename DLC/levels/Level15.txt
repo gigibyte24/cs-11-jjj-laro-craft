@@ -1,0 +1,18 @@
+r = 16; c = 18
+
+TTTTTTTTTTTTTTTTTT
+TL...............T
+T.*..............T
+T.TTTTTTTTTTTTTT.T
+T.T............T.T
+T.T.~~~~~~~~~~.T.T
+T.T.~........~.T.T
+T.T.~.RRRRRR.~.T.T
+T.T.~.R++++R.~.T.T
+T.T.~.R++++R.~.T.T
+T.T.~.RRRRRR.~.T.T
+T.T.~........~.T.T
+T.T.~~~~~~~~~~.T.T
+T.T............T.T
+T.TTTTTTTTTTTTTTTT
+TTTTTTTTTTTTTTTTTT

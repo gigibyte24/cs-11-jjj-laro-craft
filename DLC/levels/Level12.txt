@@ -1,0 +1,12 @@
+r = 10; c = 14
+
+TTTTTTTTTTTTTT
+TL...........T
+TTTTTTT......T
+T~~~~~T..+...T
+T~~~~~T......T
+T~~~~~TTTTTTTT
+T~~~~~T......T
+T~~~~~T...+..T
+T~~~~~.......T
+TTTTTTTTTTTTTT

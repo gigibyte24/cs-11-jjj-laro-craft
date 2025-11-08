@@ -1,6 +1,5 @@
 
 import os
-import time
 import copy
 from argparse import ArgumentParser
 
@@ -30,11 +29,17 @@ def main():
 data = main()
 if data[0] != None:
     board = data[0].splitlines()[2:]
+<<<<<<< HEAD:Game/Scripts.py
     row = 0
     col = 0
+=======
+    r = int(data[0].splitlines()[0][4:data[0].splitlines()[0].index(";")])
+    c = int(data[0].splitlines()[0][data[0].splitlines()[0].index("c") + 4:])
+>>>>>>> d4ef03ee907d3c6dd0bc53e7cfbb5efe6572b99e:Game/shroom_raider.py
     RowConstuctor = []
     DisplayBoard = []
-
+    xPos = 0
+    yPos = 0
     Player = {
         "xPos": 0,
         "yPos": 0,
@@ -45,11 +50,10 @@ if data[0] != None:
     }
 
     for x in board:
-        col = 0
         for y in x:
             if y == "L":
-                Player["xPos"] = col
-                Player["yPos"] = row
+                Player["xPos"] = xPos
+                Player["yPos"] = yPos
                 RowConstuctor.append("🧑")
             if y == "+":
                 Player["win"] += 1
@@ -59,7 +63,7 @@ if data[0] != None:
             if y == "T":
                 RowConstuctor.append("🌲")
             if y == "R":
-                RowConstuctor.append("🪨 ")
+                RowConstuctor.append("🪨")
             if y == "~":
                 RowConstuctor.append("🟦")
             if y == "-":
@@ -68,10 +72,11 @@ if data[0] != None:
                 RowConstuctor.append("🪓")
             if y == "*":
                 RowConstuctor.append("🔥")
-            col+= 1
+            xPos += 1
         DisplayBoard.append(RowConstuctor)
         RowConstuctor = []
-        row += 1
+        xPos = 0
+        yPos += 1
         
 
     InitialPlayer = copy.deepcopy(Player)
@@ -154,8 +159,8 @@ def NoMoves(Player, DisplayBoard):
 def TermPrint(DisplayBoard, Cleared):
     RowConstuctor = []
     with open("Output.txt", "w", encoding='utf-8') as file:
-        row = row
-        col = col
+        row = r
+        col = c
         file.write(Cleared)
         file.write("\nr = " + str(row) + "; c = " + str(col))
         for x in DisplayBoard:
@@ -168,7 +173,7 @@ def TermPrint(DisplayBoard, Cleared):
                     RowConstuctor.append(".")
                 if y == "🌲":
                     RowConstuctor.append("T")
-                if y == "🪨 ":
+                if y == "🪨":
                     RowConstuctor.append("R")
                 if y == "🟦":
                     RowConstuctor.append("~")
@@ -283,7 +288,11 @@ def BurnTree(i, j):
 
 def Space(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard):
     #-------------------checks the previous tile of the player---------------------------#
+<<<<<<< HEAD:Game/Scripts.py
     Spacetiles = ("　", "🍄", "🌲", "🪨 ", "🧑")
+=======
+    Spacetiles = ("　", "🍄", "🌲", "🪨", "🧑")
+>>>>>>> d4ef03ee907d3c6dd0bc53e7cfbb5efe6572b99e:Game/shroom_raider.py
     if InitialBoard[Player["yPos"]][Player["xPos"]] in Spacetiles:
         DisplayBoard[Player["yPos"]][Player["xPos"]] = "　"
          
@@ -338,14 +347,14 @@ def movement(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoa
             Loss(Player, DisplayBoard)
 
     #------------------------rock-------------------------------------------#
-    elif DisplayBoard[Player["yPos"] + yMoveVal][Player["xPos"] + xMoveVal] == "🪨 ":
-        Avoid = ("🍄", "🪨 ", "🪓", "🔥", "🌲")
+    elif DisplayBoard[Player["yPos"] + yMoveVal][Player["xPos"] + xMoveVal] == "🪨":
+        Avoid = ("🍄", "🪨", "🪓", "🔥", "🌲")
         if DisplayBoard[Player["yPos"] + (yMoveVal*2)][Player["xPos"] + (xMoveVal*2)] not in Avoid:
             if DisplayBoard[Player["yPos"] + (yMoveVal*2)][Player["xPos"] + (xMoveVal*2)] == "🟦":
                 DisplayBoard[Player["yPos"] + (yMoveVal*2)][Player["xPos"] + (xMoveVal*2)] = "⬜"
                 Space(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard)
             else:
-                DisplayBoard[Player["yPos"] + (yMoveVal*2)][Player["xPos"] + (xMoveVal*2)] = "🪨 "
+                DisplayBoard[Player["yPos"] + (yMoveVal*2)][Player["xPos"] + (xMoveVal*2)] = "🪨"
                 Space(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard)
 
     #------------------------Tree-------------------------------------------#
