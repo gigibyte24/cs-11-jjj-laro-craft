@@ -1,4 +1,5 @@
 r = 7; c = 7
+
 TTTTTTT
 TL.T..T
 T..T+.T

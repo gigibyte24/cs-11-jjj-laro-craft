@@ -28,7 +28,7 @@ def main():
 
 data = main()
 if data[0] != None:
-    board = data[0][1:].splitlines()
+    board = data[0][2:].splitlines()
     row = 0
     col = 0
     RowConstuctor = []
@@ -155,6 +155,8 @@ def NoMoves(Player, DisplayBoard):
 def TermPrint(DisplayBoard, Cleared):
     RowConstuctor = []
     with open("Output.txt", "w", encoding='utf-8') as file:
+        row = row
+        col = col
         file.write(Cleared)
         file.write("\nr = " + str(row) + "; c = " + str(col))
         for x in DisplayBoard:
@@ -324,7 +326,7 @@ def BurnTree(i, j):
         if not (new_i < 0 or new_j < 0 or new_i >= len(DisplayBoard) or new_j >= len(DisplayBoard[0])):
             if DisplayBoard[new_i][new_j] == "🌲":
                 DisplayBoard[new_i][new_j] = "　"
-                BurnTree(new_i, j+adj[1])
+                BurnTree(i+adj[0], j+adj[1])
 
 def Space(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard):
     Spacetiles = ("　", "🍄", "🌲", "🪨 ", "🧑")
@@ -396,16 +398,17 @@ def movement(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoa
             Space(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard)
             Player["axe"] -= 1
         if Player["flamethrower"] == True:
-            Space(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard)
             i, j = Player["yPos"], Player["xPos"]
             BurnTree(i, j)
+            Space(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard)
             Player["flamethrower"] -= 1
 
-while not data[1]:
-    clearConsole()
-    Position(DisplayBoard, Player)
-    printBoard(DisplayBoard)
-    PlayerInput(Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard)
+if __name__ == "__main__":
+    while not data[1]:
+        clearConsole()
+        Position(DisplayBoard, Player)
+        printBoard(DisplayBoard)
+        PlayerInput(Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard)
 
-while data[1]:
-    TerminalInput(Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard)
+    while data[1]:
+        TerminalInput(Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard)
