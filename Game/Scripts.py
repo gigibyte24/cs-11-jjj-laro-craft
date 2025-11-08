@@ -28,7 +28,7 @@ def main():
 
 data = main()
 if data[0] != None:
-    board = data[0].splitlines()
+    board = data[0][1:].splitlines()
     row = 0
     col = 0
     RowConstuctor = []
@@ -44,6 +44,7 @@ if data[0] != None:
     }
 
     for x in board:
+        col = 0
         for y in x:
             if y == "L":
                 Player["xPos"] = col
@@ -70,7 +71,7 @@ if data[0] != None:
         DisplayBoard.append(RowConstuctor)
         RowConstuctor = []
         row += 1
-        col = 0
+        
 
     InitialPlayer = copy.deepcopy(Player)
     InitialBoard = copy.deepcopy(DisplayBoard)
@@ -138,33 +139,47 @@ def Loss(Player, DisplayBoard):
 
 def TermWin(Player, DisplayBoard):
     Position(DisplayBoard, Player)
-    with open("Output.txt", "w", encoding='utf-8') as file:
-        file.write("Clear")
-        for line in DisplayBoard:
-            file.write("\n" + "".join(line))
-        file.write("\nYou collected all mushrooms! You win.")
-        file.write("\nMushrooms Collected: " + str(Player["mushroom"]) + " out of " + str(Player["win"]))
-        quit()
+    TermPrint(DisplayBoard, "Clear")
+    quit()
 
 def TermLoss(Player, DisplayBoard):
     Position(DisplayBoard, Player)
-    with open("Output.txt", "w", encoding='utf-8') as file:
-        file.write("No Clear")
-        for line in DisplayBoard:
-            file.write("\n" + "".join(line))
-        file.write("\nYou drowned! Game Over.")
-        file.write("\nMushrooms Collected: " + str(Player["mushroom"]) + " out of " + str(Player["win"]))
-        quit()
+    TermPrint(DisplayBoard, "No Clear")
+    quit()
 
 def NoMoves(Player, DisplayBoard):
     Position(DisplayBoard, Player)
+    TermPrint(DisplayBoard, "No Clear")
+    quit()
+
+def TermPrint(DisplayBoard, Cleared):
+    RowConstuctor = []
     with open("Output.txt", "w", encoding='utf-8') as file:
-        file.write("No Clear")
-        for line in DisplayBoard:
-            file.write("\n" + "".join(line))
-        file.write("\nRan out of moves! Game Over.")
-        file.write("\nMushrooms Collected: " + str(Player["mushroom"]) + " out of " + str(Player["win"]))
-        quit()
+        file.write(Cleared)
+        file.write("\nr = " + str(row) + "; c = " + str(col))
+        for x in DisplayBoard:
+            for y in x:
+                if y == "🧑":
+                    RowConstuctor.append("L")
+                if y == "🍄":
+                    RowConstuctor.append("+")
+                if y == "　":
+                    RowConstuctor.append(".")
+                if y == "🌲":
+                    RowConstuctor.append("T")
+                if y == "🪨 ":
+                    RowConstuctor.append("R")
+                if y == "🟦":
+                    RowConstuctor.append("~")
+                if y == "⬜":
+                    RowConstuctor.append("-")
+                if y == "🪓":
+                    RowConstuctor.append("x")
+                if y == "🔥":
+                    RowConstuctor.append("*")
+            file.write("\n" + "".join(RowConstuctor))
+            RowConstuctor = []
+
 
 def PlayerInput(Player, InitialPlayer, DisplayBoard, ToggleBoard, InitialBoard):
     print("\nPress W, A, S, D or I, J, K, L to move")
@@ -204,6 +219,44 @@ def PlayerInput(Player, InitialPlayer, DisplayBoard, ToggleBoard, InitialBoard):
 
             if move == "d" or move == "l":
                 movement(0, 1, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard, False)
+        except IndexError:
+            break
+
+        if move == "p":
+            if Player["axe"] == False and Player["flamethrower"] == False:
+                if InitialBoard[Player["yPos"]][Player["xPos"]] == "🪓" and ToggleBoard[Player["yPos"]][Player["xPos"]] != "/":
+                    ToggleBoard[Player["yPos"]][Player["xPos"]] = "/"
+                    Player["axe"] += 1
+                if InitialBoard[Player["yPos"]][Player["xPos"]] == "🔥" and ToggleBoard[Player["yPos"]][Player["xPos"]] != "/":
+                    ToggleBoard[Player["yPos"]][Player["xPos"]] = "/"
+                    Player["flamethrower"] += 1
+
+        if move == "q":
+            print("Goodbye")
+            quit()
+
+        if move == "!":
+            Restart(Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard)
+
+def TerminalInput(Player, InitialPlayer, DisplayBoard, ToggleBoard, InitialBoard):
+    moveset = data[1]
+    
+    for move in moveset:
+        if move not in ("w", "a", "s", "d", "!", "q", "p"):
+            break
+        try:
+            if move == "w" or move == "i":
+                movement(-1, 0, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard, True)
+
+            if move == "a" or move == "j":
+                movement(0, -1, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard, True)
+
+            if move == "s" or move == "k":
+                movement(1, 0, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard, True)
+
+            if move == "d" or move == "l":
+                movement(0, 1, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard, True)
+            Position(DisplayBoard, Player)
         except IndexError:
             break
 
