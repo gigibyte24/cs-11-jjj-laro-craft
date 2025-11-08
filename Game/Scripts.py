@@ -28,7 +28,7 @@ def main():
 
 data = main()
 if data[0] != None:
-    board = data[0].splitlines()
+    board = data[0][1:].splitlines()
     row = 0
     col = 0
     RowConstuctor = []
@@ -44,6 +44,7 @@ if data[0] != None:
     }
 
     for x in board:
+        col = 0
         for y in x:
             if y == "L":
                 Player["xPos"] = col
@@ -70,7 +71,7 @@ if data[0] != None:
         DisplayBoard.append(RowConstuctor)
         RowConstuctor = []
         row += 1
-        col = 0
+        
 
     InitialPlayer = copy.deepcopy(Player)
     InitialBoard = copy.deepcopy(DisplayBoard)
@@ -138,34 +139,47 @@ def Loss(Player, DisplayBoard):
 
 def TermWin(Player, DisplayBoard):
     Position(DisplayBoard, Player)
-    with open("Output.txt", "w", encoding='utf-8') as file:
-        file.write("Clear")
-        for line in DisplayBoard:
-            file.write("\n" + "".join(line))
-        file.write("\nYou collected all mushrooms! You win.")
-        file.write("\nMushrooms Collected: " + str(Player["mushroom"]) + " out of " + str(Player["win"]))
-        quit()
-
+    TermPrint(DisplayBoard, "Clear")
+    quit()
 
 def TermLoss(Player, DisplayBoard):
     Position(DisplayBoard, Player)
-    with open("Output.txt", "w", encoding='utf-8') as file:
-        file.write("No Clear")
-        for line in DisplayBoard:
-            file.write("\n" + "".join(line))
-        file.write("\nYou drowned! Game Over.")
-        file.write("\nMushrooms Collected: " + str(Player["mushroom"]) + " out of " + str(Player["win"]))
-        quit()
+    TermPrint(DisplayBoard, "No Clear")
+    quit()
 
 def NoMoves(Player, DisplayBoard):
     Position(DisplayBoard, Player)
+    TermPrint(DisplayBoard, "No Clear")
+    quit()
+
+def TermPrint(DisplayBoard, Cleared):
+    RowConstuctor = []
     with open("Output.txt", "w", encoding='utf-8') as file:
-        file.write("No Clear")
-        for line in DisplayBoard:
-            file.write("\n" + "".join(line))
-        file.write("\nRan out of moves! Game Over.")
-        file.write("\nMushrooms Collected: " + str(Player["mushroom"]) + " out of " + str(Player["win"]))
-        quit()
+        file.write(Cleared)
+        file.write("\nr = " + str(row) + "; c = " + str(col))
+        for x in DisplayBoard:
+            for y in x:
+                if y == "🧑":
+                    RowConstuctor.append("L")
+                if y == "🍄":
+                    RowConstuctor.append("+")
+                if y == "　":
+                    RowConstuctor.append(".")
+                if y == "🌲":
+                    RowConstuctor.append("T")
+                if y == "🪨 ":
+                    RowConstuctor.append("R")
+                if y == "🟦":
+                    RowConstuctor.append("~")
+                if y == "⬜":
+                    RowConstuctor.append("-")
+                if y == "🪓":
+                    RowConstuctor.append("x")
+                if y == "🔥":
+                    RowConstuctor.append("*")
+            file.write("\n" + "".join(RowConstuctor))
+            RowConstuctor = []
+
 
 def PlayerInput(Player, InitialPlayer, DisplayBoard, ToggleBoard, InitialBoard):
     print("\nPress W, A, S, D or I, J, K, L to move")

@@ -1,3 +1,4 @@
+r = 8; c = 7
 TTTTTTT
 TL...xT
 TTTTTTT

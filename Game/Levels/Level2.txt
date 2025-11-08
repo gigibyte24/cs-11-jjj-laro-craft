@@ -1,3 +1,4 @@
+r = 15; c = 14
 TTTTTTTTTTTTTT
 T............T
 T.L....++~~+.T
