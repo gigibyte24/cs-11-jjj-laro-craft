@@ -95,6 +95,7 @@ def test_burn_tree_removes_adjacent_trees(setup_boards):
         for j in range(1, 4):
             DisplayBoard[i][j] = "🌲"
     DisplayBoard[2][2] = "🔥"
+    Scripts.DisplayBoard = DisplayBoard 
     Scripts.BurnTree(2, 2)
     for i in range(1, 4):
         for j in range(1, 4):
