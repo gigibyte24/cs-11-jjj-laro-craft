@@ -276,51 +276,78 @@ def TerminalInput(Player, InitialPlayer, DisplayBoard, ToggleBoard, InitialBoard
         if move == "!":
             Restart(Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard)
 
-    NoMoves(Player, DisplayBoard)
+def TerminalInput(Player, InitialPlayer, DisplayBoard, ToggleBoard, InitialBoard):
+    moveset = data[1]
     
+    for move in moveset:
+        if move not in ("w", "a", "s", "d", "!", "q", "p"):
+            break
+        try:
+            if move == "w" or move == "i":
+                movement(-1, 0, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard, True)
 
-def BurnTree(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard):
-    Space(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard)
-    i, j = Player["yPos"], Player["xPos"]
+            if move == "a" or move == "j":
+                movement(0, -1, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard, True)
+
+            if move == "s" or move == "k":
+                movement(1, 0, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard, True)
+
+            if move == "d" or move == "l":
+                movement(0, 1, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard, True)
+            Position(DisplayBoard, Player)
+        except IndexError:
+            break
+
+        if move == "p":
+            if Player["axe"] == False and Player["flamethrower"] == False:
+                if InitialBoard[Player["yPos"]][Player["xPos"]] == "🪓" and ToggleBoard[Player["yPos"]][Player["xPos"]] != "/":
+                    ToggleBoard[Player["yPos"]][Player["xPos"]] = "/"
+                    Player["axe"] += 1
+                if InitialBoard[Player["yPos"]][Player["xPos"]] == "🔥" and ToggleBoard[Player["yPos"]][Player["xPos"]] != "/":
+                    ToggleBoard[Player["yPos"]][Player["xPos"]] = "/"
+                    Player["flamethrower"] += 1
+
+        if move == "q":
+            print("Goodbye")
+            quit()
+
+        if move == "!":
+            Restart(Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard)
+
+    NoMoves(Player, DisplayBoard)
+
+
+def BurnTree(i, j):
     adjacent = ((0,1), (0, -1), (1,0), (-1, 0))
-    def Burn(i, j):
-        for adj in adjacent:
-            new_i, new_j = i+adj[0], j+adj[1]
-            if not (new_i < 0 or new_j < 0 or new_i >= len(DisplayBoard) or new_j >= len(DisplayBoard[0])):
-                if DisplayBoard[new_i][new_j] == "🌲":
-                    DisplayBoard[new_i][new_j] = "　"
-                    Burn(new_i, j+adj[1])
-    Burn(i, j)
-
+    for adj in adjacent:
+        new_i, new_j = i+adj[0], j+adj[1]
+        if not (new_i < 0 or new_j < 0 or new_i >= len(DisplayBoard) or new_j >= len(DisplayBoard[0])):
+            if DisplayBoard[new_i][new_j] == "🌲":
+                DisplayBoard[new_i][new_j] = "　"
+                BurnTree(new_i, j+adj[1])
 
 def Space(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard):
     Spacetiles = ("　", "🍄", "🌲", "🪨 ", "🧑")
     if InitialBoard[Player["yPos"]][Player["xPos"]] in Spacetiles:
         DisplayBoard[Player["yPos"]][Player["xPos"]] = "　"
-        Player["yPos"] += yMoveVal
-        Player["xPos"] += xMoveVal
+         
     elif InitialBoard[Player["yPos"]][Player["xPos"]] == "🟦":
         DisplayBoard[Player["yPos"]][Player["xPos"]] = "⬜"
-        Player["yPos"] += yMoveVal
-        Player["xPos"] += xMoveVal
+         
     elif InitialBoard[Player["yPos"]][Player["xPos"]] == "🪓":
         if ToggleBoard[Player["yPos"]][Player["xPos"]] == "/": 
             DisplayBoard[Player["yPos"]][Player["xPos"]] = "　"
-            Player["yPos"] += yMoveVal
-            Player["xPos"] += xMoveVal
         else:
             DisplayBoard[Player["yPos"]][Player["xPos"]] = "🪓"
-            Player["yPos"] += yMoveVal
-            Player["xPos"] += xMoveVal
+             
     elif InitialBoard[Player["yPos"]][Player["xPos"]] == "🔥":
         if ToggleBoard[Player["yPos"]][Player["xPos"]] == "/":
             DisplayBoard[Player["yPos"]][Player["xPos"]] = "　"
-            Player["yPos"] += yMoveVal
-            Player["xPos"] += xMoveVal
         else:
             DisplayBoard[Player["yPos"]][Player["xPos"]] = "🔥"
-            Player["yPos"] += yMoveVal
-            Player["xPos"] += xMoveVal
+             
+    Player["yPos"] += yMoveVal
+    Player["xPos"] += xMoveVal
 
     if (Player["yPos"] < 0):
         Player["yPos"] += 1
@@ -369,7 +396,9 @@ def movement(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoa
             Space(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard)
             Player["axe"] -= 1
         if Player["flamethrower"] == True:
-            BurnTree(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard)
+            Space(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard)
+            i, j = Player["yPos"], Player["xPos"]
+            BurnTree(i, j)
             Player["flamethrower"] -= 1
 
 while not data[1]:
