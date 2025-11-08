@@ -1,9 +1,9 @@
-No Clear
 r = 7; c = 7
+
 TTTTTTT
-T..T..T
+TL.T..T
 T..T+.T
 T.TTT.T
 T.xT..T
-TL.T..T
+T..T..T
 TTTTTTT

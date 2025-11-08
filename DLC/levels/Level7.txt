@@ -1,0 +1,10 @@
+r = 8; c = 7
+
+TTTTTTT
+TL...xT
+TTTTTTT
+TTTTT.T
+T~~+T+T
+T+~RT.T
+T.~+T*T
+TTTTTTT

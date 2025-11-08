@@ -1,0 +1,46 @@
+{
+  "Level 1": [
+    {
+      "username": "Help",
+      "moves": 5
+    }
+  ],
+  "Level 2": [
+    {
+      "username": "Hisopio",
+      "moves": 11
+    }
+  ],
+  "Level 10": [
+    {
+      "username": "Hisopio",
+      "moves": 10
+    }
+  ],
+  "Level 4": [
+    {
+      "username": "Hisopio",
+      "moves": 8,
+      "timestamp": "2025-11-08T22:42:18.774084"
+    }
+  ],
+  "Level 14": [
+    {
+      "username": "Hisopio",
+      "moves": 13,
+      "timestamp": "2025-11-08T22:44:08.541052"
+    }
+  ],
+  "Level 7": [
+    {
+      "username": "Hisopio",
+      "moves": 18,
+      "timestamp": "2025-11-08T22:46:20.169268"
+    },
+    {
+      "username": "Hisopio",
+      "moves": 34,
+      "timestamp": "2025-11-08T22:44:36.156630"
+    }
+  ]
+}

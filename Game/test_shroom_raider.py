@@ -1,6 +1,6 @@
 import copy
 import pytest
-import Scripts
+import shroom_raider
 
 
 @pytest.fixture
@@ -28,7 +28,7 @@ def setup_boards():
 
 def test_position_sets_correct_tile(setup_boards):
     Player, _, DisplayBoard, *_ = setup_boards
-    Scripts.Position(DisplayBoard, Player)
+    shroom_raider.Position(DisplayBoard, Player)
     assert DisplayBoard[Player["yPos"]][Player["xPos"]] == "🧑"
 
 
@@ -36,7 +36,7 @@ def test_restart_resets_player_and_board(setup_boards):
     Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard = setup_boards
     Player["mushroom"] = 1
     DisplayBoard[2][2] = "　"
-    Scripts.Restart(Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard)
+    shroom_raider.Restart(Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard)
     assert Player == InitialPlayer
     assert DisplayBoard == InitialBoard
     assert ToggleBoard == InitialBoard
@@ -47,7 +47,7 @@ def test_restart_resets_player_and_board(setup_boards):
 def test_space_moves_player(setup_boards):
     Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard = setup_boards
     old_x, old_y = Player["xPos"], Player["yPos"]
-    Scripts.Space(0, 1, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard)
+    shroom_raider.Space(0, 1, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard)
     assert (Player["xPos"], Player["yPos"]) != (old_x, old_y)
 
 
@@ -56,7 +56,7 @@ def test_movement_into_mushroom_increases_count(setup_boards):
     # Place mushroom directly to the right
     DisplayBoard[2][3] = "🍄"
     Player["win"] = 2*256
-    Scripts.movement(0, 1, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard, True)
+    shroom_raider.movement(0, 1, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard, True)
     assert Player["mushroom"] == 1
 
 
@@ -66,8 +66,8 @@ def test_movement_into_water_triggers_loss(monkeypatch, setup_boards):
     DisplayBoard[2][3] = "🟦"
     # Patch TermLoss to track call
     called = {}
-    monkeypatch.setattr(Scripts, "TermLoss", lambda *a, **kw: called.setdefault("loss", True))
-    Scripts.movement(0, 1, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard, IsTerminal=True)
+    monkeypatch.setattr(shroom_raider, "TermLoss", lambda *a, **kw: called.setdefault("loss", True))
+    shroom_raider.movement(0, 1, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard, IsTerminal=True)
     assert "loss" in called
 
 
@@ -95,7 +95,7 @@ def test_burn_tree_removes_adjacent_trees(setup_boards):
         for j in range(1, 4):
             DisplayBoard[i][j] = "🌲"
     DisplayBoard[2][2] = "🔥"
-    Scripts.BurnTree(2, 2)
+    shroom_raider.BurnTree(2, 2)
     for i in range(1, 4):
         for j in range(1, 4):
             assert DisplayBoard[i][j] != "🌲"

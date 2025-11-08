@@ -1,5 +1,4 @@
 import os
-import time
 import copy
 from argparse import ArgumentParser
 
@@ -28,12 +27,13 @@ def main():
 
 data = main()
 if data[0] != None:
-    board = data[0][2:].splitlines()
-    row = 0
-    col = 0
+    board = data[0].splitlines()[2:]
+    r = int(data[0].splitlines()[0][4:data[0].splitlines()[0].index(";")])
+    c = int(data[0].splitlines()[0][data[0].splitlines()[0].index("c") + 4:])
     RowConstuctor = []
     DisplayBoard = []
-
+    xPos = 0
+    yPos = 0
     Player = {
         "xPos": 0,
         "yPos": 0,
@@ -44,11 +44,10 @@ if data[0] != None:
     }
 
     for x in board:
-        col = 0
         for y in x:
             if y == "L":
-                Player["xPos"] = col
-                Player["yPos"] = row
+                Player["xPos"] = xPos
+                Player["yPos"] = yPos
                 RowConstuctor.append("🧑")
             if y == "+":
                 Player["win"] += 1
@@ -58,7 +57,7 @@ if data[0] != None:
             if y == "T":
                 RowConstuctor.append("🌲")
             if y == "R":
-                RowConstuctor.append("🪨 ")
+                RowConstuctor.append("🪨")
             if y == "~":
                 RowConstuctor.append("🟦")
             if y == "-":
@@ -67,10 +66,11 @@ if data[0] != None:
                 RowConstuctor.append("🪓")
             if y == "*":
                 RowConstuctor.append("🔥")
-            col+= 1
+            xPos += 1
         DisplayBoard.append(RowConstuctor)
         RowConstuctor = []
-        row += 1
+        xPos = 0
+        yPos += 1
         
 
     InitialPlayer = copy.deepcopy(Player)
@@ -124,7 +124,6 @@ def Win(Player, DisplayBoard):
     Position(DisplayBoard, Player)
     printBoard(DisplayBoard)
     print("\nYou collected all mushrooms! You win.")
-    print("Press ! to Restart or Q to quit")
     print("\nMushrooms Collected:", Player["mushroom"], "out of", Player["win"])
     quit()
 
@@ -133,7 +132,6 @@ def Loss(Player, DisplayBoard):
     Position(DisplayBoard, Player)
     printBoard(DisplayBoard)
     print("\nYou drowned! Game Over.")
-    print("Press ! to Restart or Q to quit")
     print("\nMushrooms Collected:", Player["mushroom"], "out of", Player["win"])
     quit()
 
@@ -155,8 +153,8 @@ def NoMoves(Player, DisplayBoard):
 def TermPrint(DisplayBoard, Cleared):
     RowConstuctor = []
     with open("Output.txt", "w", encoding='utf-8') as file:
-        row = row
-        col = col
+        row = r
+        col = c
         file.write(Cleared)
         file.write("\nr = " + str(row) + "; c = " + str(col))
         for x in DisplayBoard:
@@ -169,7 +167,7 @@ def TermPrint(DisplayBoard, Cleared):
                     RowConstuctor.append(".")
                 if y == "🌲":
                     RowConstuctor.append("T")
-                if y == "🪨 ":
+                if y == "🪨":
                     RowConstuctor.append("R")
                 if y == "🟦":
                     RowConstuctor.append("~")
@@ -184,8 +182,8 @@ def TermPrint(DisplayBoard, Cleared):
 
 
 def PlayerInput(Player, InitialPlayer, DisplayBoard, ToggleBoard, InitialBoard):
-    print("\nPress W, A, S, D or I, J, K, L to move")
-    print("Press ! to Restart or Q to quit")
+    print("\nPress W, A, S, D to move")
+    print("Press ! to Restart")
     print("\nMushrooms Collected:", Player["mushroom"], "out of", Player["win"])
 
     if Player["axe"] == True:
@@ -207,7 +205,7 @@ def PlayerInput(Player, InitialPlayer, DisplayBoard, ToggleBoard, InitialBoard):
     moveset = input("Enter move:").lower()
     
     for move in moveset:
-        if move not in ("w", "a", "s", "d", "!", "q", "p"):
+        if move not in ("w", "a", "s", "d", "!", "p"):
             break
         try:
             if move == "w" or move == "i":
@@ -233,10 +231,6 @@ def PlayerInput(Player, InitialPlayer, DisplayBoard, ToggleBoard, InitialBoard):
                     ToggleBoard[Player["yPos"]][Player["xPos"]] = "/"
                     Player["flamethrower"] += 1
 
-        if move == "q":
-            print("Goodbye")
-            quit()
-
         if move == "!":
             Restart(Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard)
 
@@ -244,7 +238,7 @@ def TerminalInput(Player, InitialPlayer, DisplayBoard, ToggleBoard, InitialBoard
     moveset = data[1]
     
     for move in moveset:
-        if move not in ("w", "a", "s", "d", "!", "q", "p"):
+        if move not in ("w", "a", "s", "d", "!", "p"):
             break
         try:
             if move == "w" or move == "i":
@@ -270,48 +264,6 @@ def TerminalInput(Player, InitialPlayer, DisplayBoard, ToggleBoard, InitialBoard
                 if InitialBoard[Player["yPos"]][Player["xPos"]] == "🔥" and ToggleBoard[Player["yPos"]][Player["xPos"]] != "/":
                     ToggleBoard[Player["yPos"]][Player["xPos"]] = "/"
                     Player["flamethrower"] += 1
-
-        if move == "q":
-            print("Goodbye")
-            quit()
-
-        if move == "!":
-            Restart(Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard)
-
-def TerminalInput(Player, InitialPlayer, DisplayBoard, ToggleBoard, InitialBoard):
-    moveset = data[1]
-    
-    for move in moveset:
-        if move not in ("w", "a", "s", "d", "!", "q", "p"):
-            break
-        try:
-            if move == "w" or move == "i":
-                movement(-1, 0, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard, True)
-
-            if move == "a" or move == "j":
-                movement(0, -1, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard, True)
-
-            if move == "s" or move == "k":
-                movement(1, 0, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard, True)
-
-            if move == "d" or move == "l":
-                movement(0, 1, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard, True)
-            Position(DisplayBoard, Player)
-        except IndexError:
-            break
-
-        if move == "p":
-            if Player["axe"] == False and Player["flamethrower"] == False:
-                if InitialBoard[Player["yPos"]][Player["xPos"]] == "🪓" and ToggleBoard[Player["yPos"]][Player["xPos"]] != "/":
-                    ToggleBoard[Player["yPos"]][Player["xPos"]] = "/"
-                    Player["axe"] += 1
-                if InitialBoard[Player["yPos"]][Player["xPos"]] == "🔥" and ToggleBoard[Player["yPos"]][Player["xPos"]] != "/":
-                    ToggleBoard[Player["yPos"]][Player["xPos"]] = "/"
-                    Player["flamethrower"] += 1
-
-        if move == "q":
-            print("Goodbye")
-            quit()
 
         if move == "!":
             Restart(Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard)
@@ -326,10 +278,11 @@ def BurnTree(i, j):
         if not (new_i < 0 or new_j < 0 or new_i >= len(DisplayBoard) or new_j >= len(DisplayBoard[0])):
             if DisplayBoard[new_i][new_j] == "🌲":
                 DisplayBoard[new_i][new_j] = "　"
-                BurnTree(i+adj[0], j+adj[1])
+                BurnTree(new_i, new_j)
 
 def Space(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard):
-    Spacetiles = ("　", "🍄", "🌲", "🪨 ", "🧑")
+    #-------------------checks the previous tile of the player---------------------------#
+    Spacetiles = ("　", "🍄", "🌲", "🪨", "🧑")
     if InitialBoard[Player["yPos"]][Player["xPos"]] in Spacetiles:
         DisplayBoard[Player["yPos"]][Player["xPos"]] = "　"
          
@@ -347,10 +300,12 @@ def Space(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard,
             DisplayBoard[Player["yPos"]][Player["xPos"]] = "　"
         else:
             DisplayBoard[Player["yPos"]][Player["xPos"]] = "🔥"
-             
+    
+    #updates player's position
     Player["yPos"] += yMoveVal
     Player["xPos"] += xMoveVal
 
+    #checks if new position is within the board (including borders)
     if (Player["yPos"] < 0):
         Player["yPos"] += 1
     if (Player["xPos"] < 0):
@@ -382,14 +337,14 @@ def movement(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoa
             Loss(Player, DisplayBoard)
 
     #------------------------rock-------------------------------------------#
-    elif DisplayBoard[Player["yPos"] + yMoveVal][Player["xPos"] + xMoveVal] == "🪨 ":
-        Avoid = ("🍄", "🪨 ", "🪓", "🔥", "🌲")
+    elif DisplayBoard[Player["yPos"] + yMoveVal][Player["xPos"] + xMoveVal] == "🪨":
+        Avoid = ("🍄", "🪨", "🪓", "🔥", "🌲")
         if DisplayBoard[Player["yPos"] + (yMoveVal*2)][Player["xPos"] + (xMoveVal*2)] not in Avoid:
             if DisplayBoard[Player["yPos"] + (yMoveVal*2)][Player["xPos"] + (xMoveVal*2)] == "🟦":
                 DisplayBoard[Player["yPos"] + (yMoveVal*2)][Player["xPos"] + (xMoveVal*2)] = "⬜"
                 Space(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard)
             else:
-                DisplayBoard[Player["yPos"] + (yMoveVal*2)][Player["xPos"] + (xMoveVal*2)] = "🪨 "
+                DisplayBoard[Player["yPos"] + (yMoveVal*2)][Player["xPos"] + (xMoveVal*2)] = "🪨"
                 Space(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard)
 
     #------------------------Tree-------------------------------------------#
@@ -398,9 +353,9 @@ def movement(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoa
             Space(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard)
             Player["axe"] -= 1
         if Player["flamethrower"] == True:
+            Space(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard)
             i, j = Player["yPos"], Player["xPos"]
             BurnTree(i, j)
-            Space(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard)
             Player["flamethrower"] -= 1
 
 if __name__ == "__main__":

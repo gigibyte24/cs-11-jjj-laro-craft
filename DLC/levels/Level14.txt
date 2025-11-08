@@ -1,0 +1,16 @@
+r = 14; c = 16
+
+TTTTTTTTTTTTTTTT
+T..............T
+T.RRRRRRRRRRRR.T
+T.R..........R.T
+T.R.~~~~~~~~.R.T
+T.R.~TTTTTT~.R.T
+T.R.~T++++T~.R.T
+T.R.~T+L.+T~.R.T
+T.R.~T++++T~.R.T
+T.R.~TTTTTT~.R.T
+T.R.~~~~~~~~.R.T
+T.R..........R.T
+T.RRRRRRRRRRRR.T
+TTTTTTTTTTTTTTTT
