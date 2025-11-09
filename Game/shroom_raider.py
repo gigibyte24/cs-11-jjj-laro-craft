@@ -1,4 +1,3 @@
-
 import os
 import copy
 from argparse import ArgumentParser
@@ -29,18 +28,8 @@ def main():
 data = main()
 if data[0] != None:
     board = data[0].splitlines()[2:]
-<<<<<<< HEAD
-<<<<<<< HEAD:Game/Scripts.py
-    row = 0
-    col = 0
-=======
     r = int(data[0].splitlines()[0][4:data[0].splitlines()[0].index(";")])
     c = int(data[0].splitlines()[0][data[0].splitlines()[0].index("c") + 4:])
->>>>>>> d4ef03ee907d3c6dd0bc53e7cfbb5efe6572b99e:Game/shroom_raider.py
-=======
-    r = int(data[0].splitlines()[0][4:data[0].splitlines()[0].index(";")])
-    c = int(data[0].splitlines()[0][data[0].splitlines()[0].index("c") + 4:])
->>>>>>> f04022acf208654fc53011043c7476ef9bf90682
     RowConstuctor = []
     DisplayBoard = []
     xPos = 0
@@ -293,15 +282,7 @@ def BurnTree(i, j):
 
 def Space(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard):
     #-------------------checks the previous tile of the player---------------------------#
-<<<<<<< HEAD
-<<<<<<< HEAD:Game/Scripts.py
-    Spacetiles = ("　", "🍄", "🌲", "🪨 ", "🧑")
-=======
     Spacetiles = ("　", "🍄", "🌲", "🪨", "🧑")
->>>>>>> d4ef03ee907d3c6dd0bc53e7cfbb5efe6572b99e:Game/shroom_raider.py
-=======
-    Spacetiles = ("　", "🍄", "🌲", "🪨", "🧑")
->>>>>>> f04022acf208654fc53011043c7476ef9bf90682
     if InitialBoard[Player["yPos"]][Player["xPos"]] in Spacetiles:
         DisplayBoard[Player["yPos"]][Player["xPos"]] = "　"
          
