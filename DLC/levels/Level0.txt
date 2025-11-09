@@ -1,0 +1,7 @@
+r = 5; c = 10
+
+TTTTTTTTTT
+T........T
+T..L...O.T
+T..++....T
+TTTTTTTTTT

@@ -21,7 +21,16 @@ def parse_args():
     parser.add_argument('-f', '--file', help='Stage file path')
     parser.add_argument('-m', '--moves', help='String of moves')
     parser.add_argument('-o', '--output', help='Output file path')
-    return parser.parse_args()
+    args = parser.parse_args()
+    
+    # Store the file path globally if provided for GUI mode
+    global STAGE_FILE_PATH
+    STAGE_FILE_PATH = args.file if args.file else None
+    
+    return args
+
+# Global variable to store stage file path
+STAGE_FILE_PATH = None
 
 
 class LeaderboardManager:
@@ -52,6 +61,7 @@ class LeaderboardManager:
         entry = {
             "username": username,
             "moves": moves,
+            "timestamp": datetime.now().isoformat()
         }
         
         self.data[level_name].append(entry)
@@ -81,7 +91,7 @@ class GameState:
         self.total_mushrooms = self.player1["win"]
     
     def load_default_level(self):
-        """Load the default level"""
+        """Load the default level (Level 0)"""
         self.player1 = {
             "xPos": 2,
             "yPos": 2,
@@ -151,7 +161,7 @@ class GameState:
                 elif char == "T":
                     row_constructor.append("🌲")
                 elif char == "R":
-                    row_constructor.append("🪨")
+                    row_constructor.append("🪨 ")
                 elif char == "~":
                     row_constructor.append("🟦")
                 elif char == "-":
@@ -191,7 +201,7 @@ class GameState:
     
     def clear_space(self, y_move, x_move, player):
         """Clear the current space before moving"""
-        space_tiles = ("　", "🍄", "🌲", "🪨", "🧑", "👩")
+        space_tiles = ("　", "🍄", "🌲", "🪨 ", "🧑", "👩")
         if self.initial_board[player["yPos"]][player["xPos"]] in space_tiles:
             self.display_board[player["yPos"]][player["xPos"]] = "　"
         elif self.initial_board[player["yPos"]][player["xPos"]] == "🟦":
@@ -249,8 +259,8 @@ class GameState:
             self.move_count += 1
             return 'loss'
         
-        elif next_tile == "🪨":
-            avoid = ("🍄", "🪨", "🪓", "🔥", "🌲", "🧑", "👩")
+        elif next_tile == "🪨 ":
+            avoid = ("🍄", "🪨 ", "🪓", "🔥", "🌲", "🧑", "👩")
             try:
                 beyond_tile = self.display_board[player["yPos"] + (y_move * 2)][player["xPos"] + (x_move * 2)]
                 if (player["yPos"] + (y_move * 2) == other_player["yPos"] and 
@@ -261,7 +271,7 @@ class GameState:
                     if beyond_tile == "🟦":
                         self.display_board[player["yPos"] + (y_move * 2)][player["xPos"] + (x_move * 2)] = "⬜"
                     else:
-                        self.display_board[player["yPos"] + (y_move * 2)][player["xPos"] + (x_move * 2)] = "🪨"
+                        self.display_board[player["yPos"] + (y_move * 2)][player["xPos"] + (x_move * 2)] = "🪨 "
                     self.clear_space(y_move, x_move, player)
                     self.move_count += 1
                     return 'moved'
@@ -335,7 +345,7 @@ class GameState:
                         line += "."
                     elif cell == "🌲":
                         line += "T"
-                    elif cell == "🪨":
+                    elif cell == "🪨 ":
                         line += "R"
                     elif cell == "🟦":
                         line += "~"
@@ -369,7 +379,11 @@ class GameScreen(Screen):
     def __init__(self, level_data=None, level_name="Level 1"):
         super().__init__()
         self.game_state = GameState(level_data)
-        self.level_name = level_name
+        # If no level data provided, this is Level 0
+        if level_data is None:
+            self.level_name = "Level 0"
+        else:
+            self.level_name = level_name
         self.game_over = False
     
     def compose(self) -> ComposeResult:
@@ -391,7 +405,7 @@ class GameScreen(Screen):
         
         board_text = Text(self.game_state.get_board_string(), justify="center")
         board_widget.update(Panel(board_text, border_style="bright_cyan", title="🍄 Shroom Raider 🍄", 
-                title_align="center"))
+                                   title_align="center"))
         
         p1 = self.game_state.player1
         p2 = self.game_state.player2
@@ -515,7 +529,7 @@ class WinScreen(Screen):
                 yield Input(placeholder="Username (optional)", id="username_input")
                 with Horizontal(id="modal_buttons"):
                     yield Button("💾 Save", id="save_score", variant="success")
-                    yield Button("⏭️ Skip", id="skip", variant="default")
+                    yield Button("⏭️ Next", id="next_level", variant="default")
                     yield Button("🏠 Menu", id="menu", variant="primary")
     
     def on_button_pressed(self, event: Button.Pressed) -> None:
@@ -524,11 +538,50 @@ class WinScreen(Screen):
             username = username_input.value.strip()
             if username:
                 self.app.leaderboard.add_score(username, self.level_name, self.move_count)
-            self.action_play_again()
-        elif event.button.id == "skip":
-            self.action_play_again()
+            # Go to main menu after saving
+            self.app.pop_screen()
+            self.app.pop_screen()
+        elif event.button.id == "next_level":
+            self.action_next_level()
         elif event.button.id == "menu":
             self.action_to_menu()
+    
+    def action_next_level(self):
+        """Load the next level"""
+        # Extract level number from level name
+        if self.level_name.startswith("Level "):
+            try:
+                current_level = int(self.level_name.split()[1])
+                next_level = current_level + 1
+                
+                if next_level > 15:
+                    # After level 15, go to menu
+                    self.app.pop_screen()
+                    self.app.pop_screen()
+                else:
+                    # Load next level
+                    level_file = Path(f"levels/Level{next_level}.txt")
+                    if level_file.exists():
+                        with open(level_file, 'r', encoding='utf-8') as f:
+                            level_data = f.read()
+                        self.app.pop_screen()
+                        game_screen = self.app.screen_stack[-1]
+                        if isinstance(game_screen, GameScreen):
+                            # Replace current game screen with new level
+                            self.app.pop_screen()
+                            self.app.push_screen(GameScreen(level_data, f"Level {next_level}"))
+                    else:
+                        # If file doesn't exist, go to menu
+                        self.app.pop_screen()
+                        self.app.pop_screen()
+            except (ValueError, IndexError):
+                # If level name format is unexpected, go to menu
+                self.app.pop_screen()
+                self.app.pop_screen()
+        else:
+            # If not a numbered level, go to menu
+            self.app.pop_screen()
+            self.app.pop_screen()
     
     def action_play_again(self):
         self.app.pop_screen()
@@ -592,7 +645,8 @@ class LeaderboardScreen(Screen):
             with Container(id="leaderboard_container"):
                 yield Label(f"🏆 {self.level_name} Leaderboard 🏆", id="leaderboard_title")
                 yield Static(id="leaderboard_table")
-                yield Button("⬅️ Back", id="back", variant="primary", classes="centered_button")
+                with Center():
+                    yield Button("⬅️ Back", id="back", variant="primary", classes="centered_button")
         yield Footer()
     
     def on_mount(self):
@@ -638,11 +692,17 @@ class LevelSelectScreen(Screen):
             with Container(id="level_select_container"):
                 yield Label("🎮 SELECT LEVEL 🎮", id="level_select_title")
                 with Grid(id="level_grid"):
+                    # Add Level 0 (Tutorial)
+                    with Vertical(classes="level_card"):
+                        yield Button("🍄 Level 0", id=f"level_0", variant="success", classes="level_button")
+                        yield Button("🏆", id=f"leaderboard_0", variant="default", classes="leaderboard_btn")
+                    # Add Levels 1-15
                     for i in range(1, 16):
                         with Vertical(classes="level_card"):
                             yield Button(f"🍄 Level {i}", id=f"level_{i}", variant="primary", classes="level_button")
                             yield Button("🏆", id=f"leaderboard_{i}", variant="default", classes="leaderboard_btn")
-                yield Button("⬅️ Back to Menu", id="back", variant="default", classes="centered_button")
+                with Center():
+                    yield Button("⬅️ Back to Menu", id="back", variant="default", classes="centered_button")
         yield Footer()
     
     def on_button_pressed(self, event: Button.Pressed) -> None:
@@ -691,7 +751,17 @@ class MainMenuScreen(Screen):
     
     def on_button_pressed(self, event: Button.Pressed) -> None:
         if event.button.id == "play":
-            self.app.push_screen(GameScreen())
+            # Check if a stage file was provided via command line
+            if STAGE_FILE_PATH:
+                try:
+                    with open(STAGE_FILE_PATH, 'r', encoding='utf-8') as f:
+                        level_data = f.read()
+                    level_name = Path(STAGE_FILE_PATH).stem
+                    self.app.push_screen(GameScreen(level_data, level_name))
+                except FileNotFoundError:
+                    self.app.push_screen(GameScreen())
+            else:
+                self.app.push_screen(GameScreen())
         elif event.button.id == "levels":
             self.app.push_screen(LevelSelectScreen())
         elif event.button.id == "exit":

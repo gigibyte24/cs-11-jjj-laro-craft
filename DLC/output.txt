@@ -1,17 +1,9 @@
 No Clear
-r = 15; c = 15
-TTTTTTTTTTTTTTT
-T.............T
-T.............T
-T.L..++.....O.T
-T.............T
-T......+......T
-T.............T
-T.............T
-T........++...T
-T..+..........T
-T....+........T
-T.............T
-T.............T
-T........+....T
-TTTTTTTTTTTTTTT
+r = 7; c = 7
+TTTTTTT
+T.LTO.T
+T..T+.T
+T.TTT.T
+T.xT..T
+T..T..T
+TTTTTTT
