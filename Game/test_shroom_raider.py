@@ -95,12 +95,16 @@ def test_burn_tree_removes_adjacent_trees(setup_boards):
         for j in range(1, 4):
             DisplayBoard[i][j] = "🌲"
     DisplayBoard[2][2] = "🔥"
+<<<<<<< HEAD
 <<<<<<< HEAD:Game/test_Scripts.py
     Scripts.DisplayBoard = DisplayBoard 
     Scripts.BurnTree(2, 2)
 =======
     shroom_raider.BurnTree(2, 2)
 >>>>>>> d4ef03ee907d3c6dd0bc53e7cfbb5efe6572b99e:Game/test_shroom_raider.py
+=======
+    shroom_raider.BurnTree(2, 2)
+>>>>>>> f04022acf208654fc53011043c7476ef9bf90682
     for i in range(1, 4):
         for j in range(1, 4):
             assert DisplayBoard[i][j] != "🌲"

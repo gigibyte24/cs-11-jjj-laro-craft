@@ -7,8 +7,15 @@ T..T+T...T+T..T
 T..TTT...TTT..T
 T.............T
 T......L......T
+<<<<<<< HEAD
 T.............T
 T..RRR...RRR..T
 T..R*R...RxR..T
 T..RRR...RRR..T
+=======
+T......O......T
+T..RRR...RRR..T
+T..R*R...RxR..T
+T..R.......R..T
+>>>>>>> f04022acf208654fc53011043c7476ef9bf90682
 TTTTTTTTTTTTTTT
