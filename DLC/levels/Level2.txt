@@ -1,7 +1,15 @@
+<<<<<<< HEAD
 r = 15; c = 14
 
 TTTTTTTTTTTTTT
 T............T
 T.L....++~~+.T
+=======
+r = 5; c = 14
+
+TTTTTTTTTTTTTT
+T............T
+T.L....++~~+OT
+>>>>>>> f04022acf208654fc53011043c7476ef9bf90682
 T............T
 TTTTTTTTTTTTTT
