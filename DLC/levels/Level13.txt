@@ -5,15 +5,9 @@ T...........T
 T.TTTTTTTTT.T
 T.T.......T.T
 T.T.~~~~~.T.T
-<<<<<<< HEAD
-T.T.~+++~.T.T
-T.T.~+L+~.T.T
-T.T.~+R+~.T.T
-=======
 T.T.~+L+~.T.T
 T.T.~+++~.T.T
 T.T.~+O+~.T.T
->>>>>>> f04022acf208654fc53011043c7476ef9bf90682
 T.T.~~~~~.T.T
 T.T.......T.T
 T.TTTTxTTTT.T

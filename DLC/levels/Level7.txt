@@ -6,9 +6,5 @@ TTTTTTT
 TTTTT.T
 T~~+T+T
 T+~RT.T
-<<<<<<< HEAD
-T.~+T*T
-=======
 TO~+T*T
->>>>>>> f04022acf208654fc53011043c7476ef9bf90682
 TTTTTTT

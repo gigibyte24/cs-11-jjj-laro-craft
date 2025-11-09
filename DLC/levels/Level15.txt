@@ -1,31 +1,18 @@
 r = 16; c = 18
 
 TTTTTTTTTTTTTTTTTT
-<<<<<<< HEAD
-TL...............T
-=======
 T................T
->>>>>>> f04022acf208654fc53011043c7476ef9bf90682
 T.*..............T
 T.TTTTTTTTTTTTTT.T
 T.T............T.T
 T.T.~~~~~~~~~~.T.T
 T.T.~........~.T.T
 T.T.~.RRRRRR.~.T.T
-<<<<<<< HEAD
-T.T.~.R++++R.~.T.T
-T.T.~.R++++R.~.T.T
-=======
 T.T.~.R++L+R.~.T.T
 T.T.~.R++O+R.~.T.T
->>>>>>> f04022acf208654fc53011043c7476ef9bf90682
 T.T.~.RRRRRR.~.T.T
 T.T.~........~.T.T
 T.T.~~~~~~~~~~.T.T
 T.T............T.T
-<<<<<<< HEAD
-T.TTTTTTTTTTTTTTTT
-=======
 T.TTTTTTTTTTTTTT.T
->>>>>>> f04022acf208654fc53011043c7476ef9bf90682
 TTTTTTTTTTTTTTTTTT
