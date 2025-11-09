@@ -1,10 +1,21 @@
 /* Main Screen Styles */
 Screen {
-    background: #1a1a2e;
+    background: $surface;
     align: center middle;
 }
 
+/* Color Scheme */
+$primary: #00ff88;
+$secondary: #ff6b9d;
+$accent: #00d4ff;
+$surface: #0a0e27;
+$surface-light: #1a1f3a;
+$border: #2d3561;
+
+/* Center Container */
 Center {
+    overflow: scroll;
+    scrollbar-color: red orange;
     width: 100%;
     height: 100%;
     align: center middle;
@@ -12,42 +23,55 @@ Center {
 
 /* Menu Container */
 #menu_container {
-    width: 60;
+    width: 70;
     height: auto;
-    background: #16213e;
-    border: heavy #0f3460;
-    padding: 2;
+    background: $surface-light;
+    border: heavy $primary;
+    padding: 3;
+    border-title-align: center;
 }
 
 /* Menu Title */
 #menu_title {
     width: 100%;
-    height: 3;
+    height: 5;
     content-align: center middle;
     text-style: bold;
-    color: #00ff88;
+    color: $primary;
     margin-bottom: 1;
+    text-align: center;
+}
+
+#menu_subtitle {
+    width: 100%;
+    height: 2;
+    content-align: center middle;
+    color: $accent;
+    margin-bottom: 2;
+    text-align: center;
 }
 
 /* Level Select Title */
 #level_select_title {
     width: 100%;
-    height: 3;
+    height: 4;
     content-align: center middle;
     text-style: bold;
-    color: #00ff88;
+    color: $primary;
     margin-bottom: 2;
     margin-top: 1;
+    text-align: center;
 }
 
 /* Leaderboard Title */
 #leaderboard_title {
     width: 100%;
-    height: 3;
+    height: 4;
     content-align: center middle;
     text-style: bold;
-    color: #00ff88;
-    margin-bottom: 1;
+    color: $primary;
+    margin-bottom: 2;
+    text-align: center;
 }
 
 /* Menu Buttons Container */
@@ -57,18 +81,81 @@ Center {
     align: center middle;
 }
 
-/* Default Button Styles */
+/* Button Styles */
 Button {
-    width: 40;
+    width: 50;
+    height: 3;
     margin: 1;
+    border: heavy $border;
+    text-style: bold;
+}
+
+Button:hover {
+    border: heavy $primary;
+    text-style: bold reverse;
+}
+
+Button:focus {
+    border: heavy $accent;
+}
+
+/* Button Variants */
+Button.-success {
+    background: #003d1f;
+    color: $primary;
+}
+
+Button.-success:hover {
+    background: $primary;
+    color: #000000;
+}
+
+Button.-primary {
+    background: #001a3d;
+    color: $accent;
+}
+
+Button.-primary:hover {
+    background: $accent;
+    color: #000000;
+}
+
+Button.-error {
+    background: #3d0010;
+    color: $secondary;
+}
+
+Button.-error:hover {
+    background: $secondary;
+    color: #000000;
+}
+
+Button.-warning {
+    background: #3d2a00;
+    color: #ffa500;
+}
+
+Button.-warning:hover {
+    background: #ffa500;
+    color: #000000;
+}
+
+Button.-default {
+    background: $surface-light;
+    color: #88ddff;
+}
+
+Button.-default:hover {
+    background: #88ddff;
+    color: #000000;
 }
 
 /* Game Container */
 #game_container {
-    width: 100%;
-    height: 100%;
+    width: 95%;
+    height: 95%;
     align: center middle;
-    padding: 1;
+    padding: 2;
 }
 
 /* Level Title */
@@ -77,7 +164,8 @@ Button {
     height: 3;
     content-align: center middle;
     text-style: bold;
-    color: #00ff88;
+    color: $primary;
+    margin-bottom: 1;
 }
 
 /* Game Board */
@@ -85,7 +173,8 @@ Button {
     width: 100%;
     height: auto;
     content-align: center middle;
-    margin: 1;
+    margin-top: 2;
+    margin-bottom: 2;
 }
 
 /* Game Info */
@@ -93,26 +182,26 @@ Button {
     width: 100%;
     height: auto;
     content-align: center middle;
-    color: #88ddff;
-    margin-top: 1;
+    margin-top: 2;
 }
 
 /* Modal Container */
 #modal_container {
-    width: 60;
+    width: 70;
     height: auto;
-    background: #16213e;
-    border: heavy #00ff88;
-    padding: 2;
+    background: $surface-light;
+    border: double $primary;
+    padding: 3;
 }
 
 /* Modal Title */
 #modal_title {
     width: 100%;
-    height: 3;
+    height: 4;
     content-align: center middle;
     text-style: bold;
-    color: #00ff88;
+    color: $primary;
+    margin-bottom: 1;
 }
 
 /* Modal Message */
@@ -120,14 +209,17 @@ Button {
     width: 100%;
     height: auto;
     content-align: center middle;
-    margin: 1;
+    margin-top: 1;
+    margin-bottom: 1;
+    color: $accent;
 }
 
 /* Username Label */
 #username_label {
     width: 100%;
     content-align: center middle;
-    margin-top: 1;
+    margin-top: 2;
+    margin-bottom: 1;
     color: #88ddff;
 }
 
@@ -135,6 +227,11 @@ Button {
 #username_input {
     width: 80%;
     margin: 1;
+    border: heavy $border;
+}
+
+#username_input:focus {
+    border: heavy $primary;
 }
 
 /* Modal Buttons */
@@ -142,30 +239,37 @@ Button {
     width: 100%;
     height: auto;
     align: center middle;
-    margin-top: 1;
+    margin-top: 2;
 }
 
 #modal_buttons Button {
     width: auto;
-    min-width: 15;
+    min-width: 18;
+    margin-left: 1;
+    margin-right: 1;
 }
 
 /* Level Select Container */
 #level_select_container {
-    width: 100%;
-    height: 100%;
+    overflow: scroll;
+    scrollbar-color: red orange;
+    width: 95%;
+    height: 95%;
     padding: 2;
-    align: center top;
+    align: center middle;
 }
 
 /* Level Grid */
 #level_grid {
+    overflow: scroll;
+    scrollbar-color: red orange;
     grid-size: 5 3;
     grid-gutter: 1 2;
-    width: 90%;
+    width: 100%;
     height: auto;
     margin-top: 2;
-    margin-bottom: 2;
+    margin-bottom: 3;
+    align: center middle;
 }
 
 /* Level Card */
@@ -173,6 +277,14 @@ Button {
     width: 100%;
     height: auto;
     align: center middle;
+    border: solid $border;
+    padding: 1;
+    background: $surface-light;
+}
+
+.level_card:hover {
+    border: solid $primary;
+    background: #1f2447;
 }
 
 /* Level Button */
@@ -181,6 +293,7 @@ Button {
     height: 5;
     margin-top: 1;
     margin-bottom: 1;
+    text-style: bold;
 }
 
 /* Leaderboard Button */
@@ -188,26 +301,29 @@ Button {
     width: 100%;
     height: 3;
     margin-top: 1;
+    margin-bottom: 1;
 }
 
-/* Back Button */
-.back_button {
-    width: 30;
-    margin-top: 2;
+/* Centered Button */
+.centered_button {
+    width: 35;
+    height: 3;
+    margin-top: 3;
+    display: block;
 }
 
 /* Leaderboard Container */
 #leaderboard_container {
-    width: 80;
+    width: 85;
     height: auto;
-    background: #16213e;
-    border: heavy #0f3460;
-    padding: 2;
+    background: $surface-light;
+    border: heavy $border;
+    padding: 3;
 }
 
 #leaderboard_container Button {
-    width: 20;
-    margin-top: 2;
+    width: 25;
+    margin-top: 3;
 }
 
 /* Leaderboard Table */
@@ -220,9 +336,21 @@ Button {
 
 /* Header and Footer */
 Header {
-    background: #0f3460;
+    background: $surface-light;
+    color: $primary;
+    text-style: bold;
 }
 
 Footer {
-    background: #0f3460;
+    background: $surface-light;
+    color: $accent;
+}
+
+Footer > .footer--key {
+    background: $border;
+    color: $primary;
+}
+
+Footer > .footer--description {
+    color: #88ddff;
 }

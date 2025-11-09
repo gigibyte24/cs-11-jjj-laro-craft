@@ -1,7 +1,7 @@
-r = 15; c = 14
+r = 5; c = 14
 
 TTTTTTTTTTTTTT
 T............T
-T.L....++~~+.T
+T.L....++~~+OT
 T............T
 TTTTTTTTTTTTTT

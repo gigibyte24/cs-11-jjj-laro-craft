@@ -1,7 +1,7 @@
 r = 7; c = 7
 
 TTTTTTT
-TL.R..T
+TL.R.OT
 T..R.+T
 T..RR.T
 T.R+..T

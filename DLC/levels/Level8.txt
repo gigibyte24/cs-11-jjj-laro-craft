@@ -2,7 +2,7 @@ r = 10; c = 12
 
 TTTTTTTTTTTT
 T..........T
-T.L........T
+T.L......O.T
 T..RR......T
 T..RR..~~~.T
 T......~~~.T

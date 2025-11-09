@@ -7,8 +7,8 @@ T..T+T...T+T..T
 T..TTT...TTT..T
 T.............T
 T......L......T
-T.............T
+T......O......T
 T..RRR...RRR..T
 T..R*R...RxR..T
-T..RRR...RRR..T
+T..R.......R..T
 TTTTTTTTTTTTTTT

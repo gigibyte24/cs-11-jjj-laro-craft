@@ -5,9 +5,9 @@ T...........T
 T.TTTTTTTTT.T
 T.T.......T.T
 T.T.~~~~~.T.T
-T.T.~+++~.T.T
 T.T.~+L+~.T.T
-T.T.~+R+~.T.T
+T.T.~+++~.T.T
+T.T.~+O+~.T.T
 T.T.~~~~~.T.T
 T.T.......T.T
 T.TTTTxTTTT.T
