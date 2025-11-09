@@ -27,13 +27,12 @@ def main():
 
 data = main()
 if data[0] != None:
-    board = data[0].splitlines()[2:]
-    r = int(data[0].splitlines()[0][4:data[0].splitlines()[0].index(";")])
-    c = int(data[0].splitlines()[0][data[0].splitlines()[0].index("c") + 4:])
+    board = data[0].splitlines()[1:]
+    r = int(data[0].split()[0])
+    c = int(data[0].split()[1])
     RowConstuctor = []
     DisplayBoard = []
-    xPos = 0
-    yPos = 0
+    xPos = yPos = 0
     Player = {
         "xPos": 0,
         "yPos": 0,
@@ -42,40 +41,28 @@ if data[0] != None:
         "axe": 0,
         "flamethrower": 0,
     }
-
-    for x in board:
-        for y in x:
-            if y == "L":
+    Emojify = {
+            "T": "🌲",
+            "L": "🧑",
+            "+": "🍄",
+            "R": "🪨",
+            "~": "🟦",
+            "-": "⬜",
+            ".": "　",
+            "x": "🪓",
+            "*": "🔥",
+        }
+    
+    for yPos, row in enumerate(board):
+        for xPos, cell in enumerate(row):
+            if cell == "L":
                 Player["xPos"] = xPos
                 Player["yPos"] = yPos
-                RowConstuctor.append("🧑")
-            if y == "+":
+            if cell == "+":
                 Player["win"] += 1
-                RowConstuctor.append("🍄")
-            if y == ".":
-                RowConstuctor.append("　")
-            if y == "T":
-                RowConstuctor.append("🌲")
-            if y == "R":
-                RowConstuctor.append("🪨")
-            if y == "~":
-                RowConstuctor.append("🟦")
-            if y == "-":
-                RowConstuctor.append("⬜")
-            if y == "x":
-                RowConstuctor.append("🪓")
-            if y == "*":
-                RowConstuctor.append("🔥")
-            xPos += 1
+            RowConstuctor.append(Emojify[cell])
         DisplayBoard.append(RowConstuctor)
         RowConstuctor = []
-        xPos = 0
-        yPos += 1
-        
-
-    InitialPlayer = copy.deepcopy(Player)
-    InitialBoard = copy.deepcopy(DisplayBoard)
-    ToggleBoard = copy.deepcopy(DisplayBoard)
 
 else:
     WaitTime = 1
@@ -97,9 +84,9 @@ else:
     ["🌲", "🌲", "🌲", "🌲", "🌲", "🌲", "🌲", "🌲", "🌲", "🌲"]
     ]
 
-    InitialPlayer = copy.deepcopy(Player)
-    InitialBoard = copy.deepcopy(DisplayBoard)
-    ToggleBoard = copy.deepcopy(DisplayBoard)
+InitialPlayer = copy.deepcopy(Player)
+InitialBoard = copy.deepcopy(DisplayBoard)
+ToggleBoard = copy.deepcopy(DisplayBoard)
 
 #--------------Functions-------------------------#
 
@@ -151,37 +138,24 @@ def NoMoves(Player, DisplayBoard):
     quit()
 
 def TermPrint(DisplayBoard, Cleared):
-    RowConstuctor = []
     with open("Output.txt", "w", encoding='utf-8') as file:
-        row = r
-        col = c
         file.write(Cleared)
-        file.write("\nr = " + str(row) + "; c = " + str(col))
-        for x in DisplayBoard:
-            for y in x:
-                if y == "🧑":
-                    RowConstuctor.append("L")
-                if y == "🍄":
-                    RowConstuctor.append("+")
-                if y == "　":
-                    RowConstuctor.append(".")
-                if y == "🌲":
-                    RowConstuctor.append("T")
-                if y == "🪨":
-                    RowConstuctor.append("R")
-                if y == "🟦":
-                    RowConstuctor.append("~")
-                if y == "⬜":
-                    RowConstuctor.append("-")
-                if y == "🪓":
-                    RowConstuctor.append("x")
-                if y == "🔥":
-                    RowConstuctor.append("*")
-            file.write("\n" + "".join(RowConstuctor))
-            RowConstuctor = []
+        file.write("\n" + str(r) + " " + str(c))
+        Convert = {
+            "🌲" : "T",
+            "🧑" : "L",
+            "🍄" : "+",
+            "🪨" : "R",
+            "🟦" : "~",
+            "⬜" : "-",
+            "　" : ".",
+            "🪓" : "x",
+            "🔥" : "*",
+        }
+        file.write("\n".join("".join(Convert[y] for y in row) for row in DisplayBoard))
 
 
-def PlayerInput(Player, InitialPlayer, DisplayBoard, ToggleBoard, InitialBoard):
+def PlayerInput(Player, DisplayBoard, ToggleBoard, InitialBoard):
     print("\nPress W, A, S, D to move")
     print("Press ! to Restart")
     print("\nMushrooms Collected:", Player["mushroom"], "out of", Player["win"])
@@ -209,16 +183,16 @@ def PlayerInput(Player, InitialPlayer, DisplayBoard, ToggleBoard, InitialBoard):
             break
         try:
             if move == "w" or move == "i":
-                movement(-1, 0, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard, False)
+                movement(-1, 0, Player, DisplayBoard, InitialBoard, ToggleBoard, False)
 
             if move == "a" or move == "j":
-                movement(0, -1, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard, False)
+                movement(0, -1, Player, DisplayBoard, InitialBoard, ToggleBoard, False)
 
             if move == "s" or move == "k":
-                movement(1, 0, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard, False)
+                movement(1, 0, Player, DisplayBoard, InitialBoard, ToggleBoard, False)
 
             if move == "d" or move == "l":
-                movement(0, 1, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard, False)
+                movement(0, 1, Player, DisplayBoard, InitialBoard, ToggleBoard, False)
         except IndexError:
             break
 
@@ -234,7 +208,7 @@ def PlayerInput(Player, InitialPlayer, DisplayBoard, ToggleBoard, InitialBoard):
         if move == "!":
             Restart(Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard)
 
-def TerminalInput(Player, InitialPlayer, DisplayBoard, ToggleBoard, InitialBoard):
+def TerminalInput(Player, DisplayBoard, ToggleBoard, InitialBoard):
     moveset = data[1]
     
     for move in moveset:
@@ -242,16 +216,16 @@ def TerminalInput(Player, InitialPlayer, DisplayBoard, ToggleBoard, InitialBoard
             break
         try:
             if move == "w" or move == "i":
-                movement(-1, 0, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard, True)
+                movement(-1, 0, Player, DisplayBoard, InitialBoard, ToggleBoard, True)
 
             if move == "a" or move == "j":
-                movement(0, -1, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard, True)
+                movement(0, -1, Player, DisplayBoard, InitialBoard, ToggleBoard, True)
 
             if move == "s" or move == "k":
-                movement(1, 0, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard, True)
+                movement(1, 0, Player, DisplayBoard, InitialBoard, ToggleBoard, True)
 
             if move == "d" or move == "l":
-                movement(0, 1, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard, True)
+                movement(0, 1, Player, DisplayBoard, InitialBoard, ToggleBoard, True)
             Position(DisplayBoard, Player)
         except IndexError:
             break
@@ -280,7 +254,7 @@ def BurnTree(i, j):
                 DisplayBoard[new_i][new_j] = "　"
                 BurnTree(new_i, new_j)
 
-def Space(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard):
+def Space(yMoveVal, xMoveVal, Player, DisplayBoard, InitialBoard, ToggleBoard):
     #-------------------checks the previous tile of the player---------------------------#
     Spacetiles = ("　", "🍄", "🌲", "🪨", "🧑")
     if InitialBoard[Player["yPos"]][Player["xPos"]] in Spacetiles:
@@ -312,16 +286,16 @@ def Space(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard,
         Player["xPos"] += 1
     
 
-def movement(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard, IsTerminal):
+def movement(yMoveVal, xMoveVal, Player, DisplayBoard, InitialBoard, ToggleBoard, IsTerminal):
     #------------------------spaces-------------------------------------------#
     SkipTiles = ("　", "⬜", "🪓", "🔥")
     if DisplayBoard[Player["yPos"] + yMoveVal][Player["xPos"] + xMoveVal] in SkipTiles:
-        Space(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard)
+        Space(yMoveVal, xMoveVal, Player, DisplayBoard, InitialBoard, ToggleBoard)
 
     #------------------------mushrooms-------------------------------------------#
     elif DisplayBoard[Player["yPos"] + yMoveVal][Player["xPos"] + xMoveVal] == "🍄":
         Player["mushroom"] += 1
-        Space(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard)
+        Space(yMoveVal, xMoveVal, Player, DisplayBoard, InitialBoard, ToggleBoard)
         if Player["mushroom"] == Player["win"]:
             if IsTerminal == True:
                 TermWin(Player, DisplayBoard)
@@ -330,7 +304,7 @@ def movement(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoa
 
     #------------------------water-------------------------------------------#
     elif DisplayBoard[Player["yPos"] + yMoveVal][Player["xPos"] + xMoveVal] == "🟦":
-        Space(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard)
+        Space(yMoveVal, xMoveVal, Player, DisplayBoard, InitialBoard, ToggleBoard)
         if IsTerminal == True:
                 TermLoss(Player, DisplayBoard)
         else:
@@ -342,18 +316,18 @@ def movement(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoa
         if DisplayBoard[Player["yPos"] + (yMoveVal*2)][Player["xPos"] + (xMoveVal*2)] not in Avoid:
             if DisplayBoard[Player["yPos"] + (yMoveVal*2)][Player["xPos"] + (xMoveVal*2)] == "🟦":
                 DisplayBoard[Player["yPos"] + (yMoveVal*2)][Player["xPos"] + (xMoveVal*2)] = "⬜"
-                Space(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard)
+                Space(yMoveVal, xMoveVal, Player, DisplayBoard, InitialBoard, ToggleBoard)
             else:
                 DisplayBoard[Player["yPos"] + (yMoveVal*2)][Player["xPos"] + (xMoveVal*2)] = "🪨"
-                Space(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard)
+                Space(yMoveVal, xMoveVal, Player, DisplayBoard, InitialBoard, ToggleBoard)
 
     #------------------------Tree-------------------------------------------#
     elif DisplayBoard[Player["yPos"] + yMoveVal][Player["xPos"] + xMoveVal] == "🌲":
         if Player["axe"] == True:
-            Space(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard)
+            Space(yMoveVal, xMoveVal, Player, DisplayBoard, InitialBoard, ToggleBoard)
             Player["axe"] -= 1
         if Player["flamethrower"] == True:
-            Space(yMoveVal, xMoveVal, Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard)
+            Space(yMoveVal, xMoveVal, Player, DisplayBoard, InitialBoard, ToggleBoard)
             i, j = Player["yPos"], Player["xPos"]
             BurnTree(i, j)
             Player["flamethrower"] -= 1
@@ -363,7 +337,7 @@ if __name__ == "__main__":
         clearConsole()
         Position(DisplayBoard, Player)
         printBoard(DisplayBoard)
-        PlayerInput(Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard)
+        PlayerInput(Player, DisplayBoard, InitialBoard, ToggleBoard)
 
     while data[1]:
-        TerminalInput(Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard)
+        TerminalInput(Player, DisplayBoard, InitialBoard, ToggleBoard)

@@ -1,5 +1,4 @@
-r = 7; c = 7
-
+7 7
 TTTTTTT
 T...~.T
 T..R~+T
