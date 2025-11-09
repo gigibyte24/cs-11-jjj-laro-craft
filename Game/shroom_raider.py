@@ -30,9 +30,7 @@ if data[0] != None:
     board = data[0].splitlines()[1:]
     r = int(data[0].split()[0])
     c = int(data[0].split()[1])
-    RowConstuctor = []
-    DisplayBoard = []
-    xPos = yPos = 0
+
     Player = {
         "xPos": 0,
         "yPos": 0,
@@ -41,6 +39,7 @@ if data[0] != None:
         "axe": 0,
         "flamethrower": 0,
     }
+
     Emojify = {
             "T": "🌲",
             "L": "🧑",
@@ -53,7 +52,9 @@ if data[0] != None:
             "*": "🔥",
         }
     
+    DisplayBoard = []
     for yPos, row in enumerate(board):
+        RowConstuctor = []
         for xPos, cell in enumerate(row):
             if cell == "L":
                 Player["xPos"] = xPos
@@ -62,7 +63,6 @@ if data[0] != None:
                 Player["win"] += 1
             RowConstuctor.append(Emojify[cell])
         DisplayBoard.append(RowConstuctor)
-        RowConstuctor = []
 
 else:
     WaitTime = 1
@@ -116,7 +116,6 @@ def Win(Player, DisplayBoard):
 
 def Loss(Player, DisplayBoard):
     clearConsole()
-    Position(DisplayBoard, Player)
     printBoard(DisplayBoard)
     print("\nYou drowned! Game Over.")
     print("\nMushrooms Collected:", Player["mushroom"], "out of", Player["win"])
@@ -140,7 +139,7 @@ def NoMoves(Player, DisplayBoard):
 def TermPrint(DisplayBoard, Cleared):
     with open("Output.txt", "w", encoding='utf-8') as file:
         file.write(Cleared)
-        file.write("\n" + str(r) + " " + str(c))
+        file.write("\n" + str(r) + " " + str(c) + "\n")
         Convert = {
             "🌲" : "T",
             "🧑" : "L",
@@ -154,10 +153,36 @@ def TermPrint(DisplayBoard, Cleared):
         }
         file.write("\n".join("".join(Convert[y] for y in row) for row in DisplayBoard))
 
+def InputHandler(moveset, Player, DisplayBoard, InitialBoard, ToggleBoard, IsTerminal):
+    for move in moveset:
+        if move not in ("w", "a", "s", "d", "!", "p"):
+            break
+        try:
+            if move == "w": movement(-1, 0, Player, DisplayBoard, InitialBoard, ToggleBoard, IsTerminal)
+            if move == "a": movement(0, -1, Player, DisplayBoard, InitialBoard, ToggleBoard, IsTerminal)
+            if move == "s": movement(1, 0, Player, DisplayBoard, InitialBoard, ToggleBoard, IsTerminal)
+            if move == "d": movement(0, 1, Player, DisplayBoard, InitialBoard, ToggleBoard, IsTerminal)
+        except IndexError:
+            break
+
+        if move == "p":
+            if Player["axe"] == False and Player["flamethrower"] == False:
+                if InitialBoard[Player["yPos"]][Player["xPos"]] == "🪓" and ToggleBoard[Player["yPos"]][Player["xPos"]] != "/":
+                    ToggleBoard[Player["yPos"]][Player["xPos"]] = "/"
+                    Player["axe"] += 1
+                if InitialBoard[Player["yPos"]][Player["xPos"]] == "🔥" and ToggleBoard[Player["yPos"]][Player["xPos"]] != "/":
+                    ToggleBoard[Player["yPos"]][Player["xPos"]] = "/"
+                    Player["flamethrower"] += 1
+
+        if move == "!":
+            Restart(Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard)
 
 def PlayerInput(Player, DisplayBoard, ToggleBoard, InitialBoard):
-    print("\nPress W, A, S, D to move")
-    print("Press ! to Restart")
+    print("[W] Move up")
+    print("[A] Move left")
+    print("[S] Move down")
+    print("[D] Move right")
+    print("[!] Reset")
     print("\nMushrooms Collected:", Player["mushroom"], "out of", Player["win"])
 
     if Player["axe"] == True:
@@ -170,80 +195,19 @@ def PlayerInput(Player, DisplayBoard, ToggleBoard, InitialBoard):
     if not (Player["axe"] == False and Player["flamethrower"] == False):
         print("\nInventory Full")
     elif (InitialBoard[Player["yPos"]][Player["xPos"]] == "🪓") and (ToggleBoard[Player["yPos"]][Player["xPos"]] != "/"):
-        print("\nEquippable Item on tile: Axe")
+        print("Equippable Item on tile: Axe")
     elif (InitialBoard[Player["yPos"]][Player["xPos"]] == "🔥") and (ToggleBoard[Player["yPos"]][Player["xPos"]] != "/"):
         print("\nEquippable Item on tile: Flamethrower")
     else:
         print("\nEquippable Item on tile: None")
 
     moveset = input("Enter move:").lower()
-    
-    for move in moveset:
-        if move not in ("w", "a", "s", "d", "!", "p"):
-            break
-        try:
-            if move == "w" or move == "i":
-                movement(-1, 0, Player, DisplayBoard, InitialBoard, ToggleBoard, False)
+    InputHandler(moveset, Player, DisplayBoard, InitialBoard, ToggleBoard, False)
 
-            if move == "a" or move == "j":
-                movement(0, -1, Player, DisplayBoard, InitialBoard, ToggleBoard, False)
-
-            if move == "s" or move == "k":
-                movement(1, 0, Player, DisplayBoard, InitialBoard, ToggleBoard, False)
-
-            if move == "d" or move == "l":
-                movement(0, 1, Player, DisplayBoard, InitialBoard, ToggleBoard, False)
-        except IndexError:
-            break
-
-        if move == "p":
-            if Player["axe"] == False and Player["flamethrower"] == False:
-                if InitialBoard[Player["yPos"]][Player["xPos"]] == "🪓" and ToggleBoard[Player["yPos"]][Player["xPos"]] != "/":
-                    ToggleBoard[Player["yPos"]][Player["xPos"]] = "/"
-                    Player["axe"] += 1
-                if InitialBoard[Player["yPos"]][Player["xPos"]] == "🔥" and ToggleBoard[Player["yPos"]][Player["xPos"]] != "/":
-                    ToggleBoard[Player["yPos"]][Player["xPos"]] = "/"
-                    Player["flamethrower"] += 1
-
-        if move == "!":
-            Restart(Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard)
-
-def TerminalInput(Player, DisplayBoard, ToggleBoard, InitialBoard):
+def TerminalInput(Player, DisplayBoard, InitialBoard, ToggleBoard):
     moveset = data[1]
-    
-    for move in moveset:
-        if move not in ("w", "a", "s", "d", "!", "p"):
-            break
-        try:
-            if move == "w" or move == "i":
-                movement(-1, 0, Player, DisplayBoard, InitialBoard, ToggleBoard, True)
-
-            if move == "a" or move == "j":
-                movement(0, -1, Player, DisplayBoard, InitialBoard, ToggleBoard, True)
-
-            if move == "s" or move == "k":
-                movement(1, 0, Player, DisplayBoard, InitialBoard, ToggleBoard, True)
-
-            if move == "d" or move == "l":
-                movement(0, 1, Player, DisplayBoard, InitialBoard, ToggleBoard, True)
-            Position(DisplayBoard, Player)
-        except IndexError:
-            break
-
-        if move == "p":
-            if Player["axe"] == False and Player["flamethrower"] == False:
-                if InitialBoard[Player["yPos"]][Player["xPos"]] == "🪓" and ToggleBoard[Player["yPos"]][Player["xPos"]] != "/":
-                    ToggleBoard[Player["yPos"]][Player["xPos"]] = "/"
-                    Player["axe"] += 1
-                if InitialBoard[Player["yPos"]][Player["xPos"]] == "🔥" and ToggleBoard[Player["yPos"]][Player["xPos"]] != "/":
-                    ToggleBoard[Player["yPos"]][Player["xPos"]] = "/"
-                    Player["flamethrower"] += 1
-
-        if move == "!":
-            Restart(Player, InitialPlayer, DisplayBoard, InitialBoard, ToggleBoard)
-
+    InputHandler(moveset, Player, DisplayBoard, InitialBoard, ToggleBoard, True)
     NoMoves(Player, DisplayBoard)
-
 
 def BurnTree(i, j):
     adjacent = ((0,1), (0, -1), (1,0), (-1, 0))
@@ -256,7 +220,7 @@ def BurnTree(i, j):
 
 def Space(yMoveVal, xMoveVal, Player, DisplayBoard, InitialBoard, ToggleBoard):
     #-------------------checks the previous tile of the player---------------------------#
-    Spacetiles = ("　", "🍄", "🌲", "🪨", "🧑")
+    Spacetiles = ("　", "🍄", "🌲", "🪨", "🧑") 
     if InitialBoard[Player["yPos"]][Player["xPos"]] in Spacetiles:
         DisplayBoard[Player["yPos"]][Player["xPos"]] = "　"
          
@@ -285,7 +249,6 @@ def Space(yMoveVal, xMoveVal, Player, DisplayBoard, InitialBoard, ToggleBoard):
     if (Player["xPos"] < 0):
         Player["xPos"] += 1
     
-
 def movement(yMoveVal, xMoveVal, Player, DisplayBoard, InitialBoard, ToggleBoard, IsTerminal):
     #------------------------spaces-------------------------------------------#
     SkipTiles = ("　", "⬜", "🪓", "🔥")
