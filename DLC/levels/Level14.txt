@@ -7,13 +7,8 @@ T.R..........R.T
 T.R.~~~~~~~~.R.T
 T.R.~TTTTTT~.R.T
 T.R.~T++++T~.R.T
-<<<<<<< HEAD
-T.R.~T+L.+T~.R.T
-T.R.~T++++T~.R.T
-=======
 T.R.~T+LL+T~.R.T
 T.R.~T+OO+T~.R.T
->>>>>>> f04022acf208654fc53011043c7476ef9bf90682
 T.R.~TTTTTT~.R.T
 T.R.~~~~~~~~.R.T
 T.R..........R.T

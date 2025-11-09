@@ -1,10 +1,6 @@
 {
   "Level 1": [
     {
-<<<<<<< HEAD
-      "username": "Help",
-      "moves": 5
-=======
       "username": "yes",
       "moves": 4
     },
@@ -19,21 +15,11 @@
     {
       "username": "Hisopio",
       "moves": 7
->>>>>>> f04022acf208654fc53011043c7476ef9bf90682
     }
   ],
   "Level 2": [
     {
       "username": "Hisopio",
-<<<<<<< HEAD
-      "moves": 11
-    }
-  ],
-  "Level 10": [
-    {
-      "username": "Hisopio",
-      "moves": 10
-=======
       "moves": 7
     },
     {
@@ -45,23 +31,11 @@
     {
       "username": "Soap",
       "moves": 6
->>>>>>> f04022acf208654fc53011043c7476ef9bf90682
     }
   ],
   "Level 4": [
     {
       "username": "Hisopio",
-<<<<<<< HEAD
-      "moves": 8,
-      "timestamp": "2025-11-08T22:42:18.774084"
-    }
-  ],
-  "Level 14": [
-    {
-      "username": "Hisopio",
-      "moves": 13,
-      "timestamp": "2025-11-08T22:44:08.541052"
-=======
       "moves": 8
     }
   ],
@@ -75,21 +49,11 @@
     {
       "username": "Soap",
       "moves": 4
->>>>>>> f04022acf208654fc53011043c7476ef9bf90682
     }
   ],
   "Level 7": [
     {
       "username": "Hisopio",
-<<<<<<< HEAD
-      "moves": 18,
-      "timestamp": "2025-11-08T22:46:20.169268"
-    },
-    {
-      "username": "Hisopio",
-      "moves": 34,
-      "timestamp": "2025-11-08T22:44:36.156630"
-=======
       "moves": 18
     },
     {
@@ -151,7 +115,6 @@
     {
       "username": "hIAPHYO",
       "moves": 8
->>>>>>> f04022acf208654fc53011043c7476ef9bf90682
     }
   ]
 }

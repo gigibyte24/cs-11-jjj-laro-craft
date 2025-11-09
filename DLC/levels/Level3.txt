@@ -1,11 +1,7 @@
 r = 7; c = 7
 
 TTTTTTT
-<<<<<<< HEAD
-TL.R..T
-=======
 TL.R.OT
->>>>>>> f04022acf208654fc53011043c7476ef9bf90682
 T..R.+T
 T..RR.T
 T.R+..T

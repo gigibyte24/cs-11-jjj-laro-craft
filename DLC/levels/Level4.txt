@@ -2,14 +2,8 @@ r = 7; c = 7
 
 TTTTTTT
 T...~.T
-<<<<<<< HEAD
-T..R~+T
-T.L+~~T
-T.R+..T
-=======
 T.LR~+T
 T..+~~T
 T.RO..T
->>>>>>> f04022acf208654fc53011043c7476ef9bf90682
 T.....T
 TTTTTTT
